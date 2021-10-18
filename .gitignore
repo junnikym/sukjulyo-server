@@ -29,7 +29,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-!**/database.properties
+**/database.properties
 
 ### VS Code ###
 .vscode/
+
+.gradle
