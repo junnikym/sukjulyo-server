@@ -18,7 +18,7 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(length = 36, nullable = false)
+    @Column(length = 128, nullable = false)
     private String refresh_token;
 
     @Column(length = 8, nullable = true)
