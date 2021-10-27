@@ -1,15 +1,13 @@
 package com.archive.sukjulyo.hashtag.domain;
 
 import com.archive.sukjulyo.client.domain.Client;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
+@Setter
 @Entity
 public class MyHashtag {
     @Id

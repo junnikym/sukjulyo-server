@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @Entity
 public class Client {
@@ -19,10 +19,10 @@ public class Client {
     private Long id;
 
     @Column(length = 128, nullable = false)
-    private String refresh_token;
+    private String refreshtoken;
 
     @Column(length = 8, nullable = true)
-    private String age_range;
+    private String agerange;
 
     @Column(length = 8, nullable = true)
     private String gender;
@@ -32,9 +32,9 @@ public class Client {
     private List<Hashtag> hashtags = new ArrayList<>();
 
     @Builder
-    public Client(String refresh_token, String age_range, String gender) {
-        this.refresh_token = refresh_token;
-        this.age_range = age_range;
+    public Client(String refreshtoken, String agerange, String gender) {
+        this.refreshtoken = refreshtoken;
+        this.agerange = agerange;
         this.gender = gender;
     }
 }
