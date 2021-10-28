@@ -38,16 +38,4 @@ public class HistoryService {
     public void deleteHistory(Long id) {
         historyRepository.deleteById(id);
     }
-
-    //UPDATE History
-    public History updateHistory(HistoryCreationRequest request, Long id) {
-        Optional<History> optionalHistory = historyRepository.findById(id);
-        if (!optionalHistory.isPresent()) {
-            throw new EntityNotFoundException("History not present in the database");
-        }
-
-        History history = optionalHistory.get();
-        history.
-        return historyRepository.save(history);
-    }
 }
