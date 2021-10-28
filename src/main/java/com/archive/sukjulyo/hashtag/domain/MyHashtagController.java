@@ -2,6 +2,7 @@ package com.archive.sukjulyo.hashtag.domain;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,8 +13,24 @@ import java.util.List;
 public class MyHashtagController {
     private final MyHashtagService myhashtagService;
 
-    @GetMapping("/getMyHashtag/{id}")
-    public MyHashtag getMyHashtag(@PathVariable Long id) {
-        return this.myhashtagService.readMyHashtag(id);
+    @GetMapping("/select/{id}")
+    public ResponseEntity selectMyHashtag(@PathVariable Long id) {
+        return ResponseEntity.ok(myhashtagService.selectMyHashtag(id));
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity createMyHashtag(@RequestBody MyHashtagCreationRequest request) {
+        return ResponseEntity.ok(myhashtagService.createMyHashtag(request));
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity updateMyHashtag(Long id, @RequestBody MyHashtagCreationRequest request) {
+        return ResponseEntity.ok(myhashtagService.updateMyHashtag(id, request));
+    }
+
+    @GetMapping("delete/{id}")
+    public ResponseEntity deleteMyHashtag (@PathVariable Long id) {
+        myhashtagService.deleteMyHashtag(id);
+        return ResponseEntity.ok().build();
     }
 }

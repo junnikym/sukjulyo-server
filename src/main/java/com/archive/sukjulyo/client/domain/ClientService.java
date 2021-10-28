@@ -46,6 +46,21 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
+    //UPDATE Client
+    public Client updateClient(Long id, ClientCreationRequest request) {
+        Optional<Client> optionalClient = clientRepository.findById(id);
+        if (!optionalClient.isPresent()) {
+            throw new EntityNotFoundException("Client not present in the database");
+        }
+
+        Client client = optionalClient.get();
+        client.setRefreshtoken(request.getRefreshtoken());
+        client.setAgerange(request.getAgerange());
+        client.setGender(request.getGender());
+        client.setHashtags(request.getHashtags());
+        return clientRepository.save(client);
+    }
+
     //DELETE Client
     public void deleteClient(Long id){
         clientRepository.deleteById(id);
