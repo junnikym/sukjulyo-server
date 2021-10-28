@@ -17,8 +17,8 @@ public class MyHashtagService {
     ClientRepository clientRepository;
 
     //SELECT MyHashtag
-    public MyHashtag readMyHashtag(Client client) {
-        Optional<MyHashtag> myHashtag = myHashtagRepository.findByClient(client);
+    public MyHashtag readMyHashtag(Long id) {
+        Optional<MyHashtag> myHashtag = myHashtagRepository.findByClient(clientRepository.getById(id));
         if (myHashtag.isPresent())
             return myHashtag.get();
         throw new EntityNotFoundException("Cant find any MyHashtag in this Client");
