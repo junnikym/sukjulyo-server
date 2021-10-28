@@ -27,13 +27,13 @@ public class HashtagController {
         return ResponseEntity.ok(hashtagService.createHashtag(request));
     }
 
-    @GetMapping("/delete/{id}")
+    @PutMapping("/delete/{id}")
     public ResponseEntity deleteHashtag(@PathVariable Long id) {
         hashtagService.deleteHashtag(id);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("update/{id}")
+    @DeleteMapping("update/{id}")
     public ResponseEntity updateHashtag(@RequestBody HashtagCreationRequest request, @PathVariable Long id) {
         return ResponseEntity.ok(hashtagService.updateHashtag(request, id));
     }

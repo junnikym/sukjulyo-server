@@ -20,12 +20,12 @@ public class LikedController {
         return ResponseEntity.ok(likedService.createLiked(request));
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity updateLiked(Long id, @RequestBody LikedCreationRequest request) {
         return ResponseEntity.ok(likedService.updateLiked(id, request));
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteLiked (@PathVariable Long id) {
         likedService.deleteLiked(id);
         return ResponseEntity.ok().build();

@@ -29,16 +29,15 @@ public class ClientController {
         return ResponseEntity.ok(clientService.createClient(request));
     }
 
-    @PostMapping("/update")
-    public ResponseEntity updateClient(Long id, @RequestBody ClientCreationRequest request) {
+    @PutMapping("/update/{id}")
+    public ResponseEntity updateClient(@PathVariable Long id, @RequestBody ClientCreationRequest request) {
         return ResponseEntity.ok(clientService.updateClient(id, request));
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteClient (@PathVariable Long id) {
         clientService.deleteClient(id);
         return ResponseEntity.ok().build();
     }
-
 }
 
