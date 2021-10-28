@@ -16,7 +16,7 @@ public class ClientService {
     private final ClientRepository clientRepository;
 
     //SELECT Client
-    public Client readClient(Long id) {
+    public Client selectClient(Long id) {
         Optional<Client> client = clientRepository.findById(id);
         if (client.isPresent())
             return client.get();
@@ -25,12 +25,12 @@ public class ClientService {
     }
 
     //SELECT ALL Clients
-    public List<Client> readClients(){
+    public List<Client> selectClients(){
         return clientRepository.findAll();
     }
 
     //SELECT Client By Refresh_token
-    public Client readClient(String refreshtoken) {
+    public Client selectClient(String refreshtoken) {
         Optional<Client> client = clientRepository.findByRefreshtoken(refreshtoken);
         if (client.isPresent()) {
             return  client.get();

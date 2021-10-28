@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.*;
 public class ClientController {
     private final ClientService clientService;
 
-    @GetMapping("/readAllClient")
-    public ResponseEntity readClient(@RequestParam(required = false) Long id) {
+    @GetMapping("/selectAllClient")
+    public ResponseEntity selectClient(@RequestParam(required = false) Long id) {
         System.out.println("readClient");
         if (id == null)
-            return ResponseEntity.ok(clientService.readClients());
-        return ResponseEntity.ok(clientService.readClient(id));
+            return ResponseEntity.ok(clientService.selectClients());
+        return ResponseEntity.ok(clientService.selectClient(id));
     }
 
-    @GetMapping("/readClient/{refreshtoken}")
-    public ResponseEntity readClient(@PathVariable String refreshtoken) {
-        return ResponseEntity.ok(clientService.readClient(refreshtoken));
+    @GetMapping("/selectClient/{refreshtoken}")
+    public ResponseEntity selectClient(@PathVariable String refreshtoken) {
+        return ResponseEntity.ok(clientService.selectClient(refreshtoken));
     }
 
     @GetMapping("create/domain")

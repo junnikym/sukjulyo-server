@@ -25,7 +25,7 @@ public class HashtagService {
     }
 
         //SELECT Hashtag
-        public Hashtag readHashtag (String tag)
+        public Hashtag selectHashtag (String tag)
         {
             Optional<Hashtag> hashtag = hashtagRepository.findByTag(tag);
             if (hashtag.isPresent()) {
@@ -38,7 +38,7 @@ public class HashtagService {
     }
 
         //SELECT HashtagAll
-        public List<Hashtag> readHashtags() {
+        public List<Hashtag> selectHashtags() {
             return hashtagRepository.findAll();
         }
     }

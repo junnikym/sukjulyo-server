@@ -13,9 +13,9 @@ import java.util.List;
 public class HashtagController {
     private final HashtagService hashtagService;
 
-    @GetMapping("/readHashtag")
-    public List<Hashtag> getAllHashtag() {
-        return this.hashtagService.readHashtags();
+    @GetMapping("/selectHashtag")
+    public List<Hashtag> selectHashtags() {
+        return this.hashtagService.selectHashtags();
     }
 
 //    @RequestMapping(value = "/hashtag")
