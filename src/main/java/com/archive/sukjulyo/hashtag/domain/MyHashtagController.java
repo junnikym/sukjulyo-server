@@ -23,12 +23,12 @@ public class MyHashtagController {
         return ResponseEntity.ok(myhashtagService.createMyHashtag(request));
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity updateMyHashtag(Long id, @RequestBody MyHashtagCreationRequest request) {
         return ResponseEntity.ok(myhashtagService.updateMyHashtag(id, request));
     }
 
-    @GetMapping("delete/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity deleteMyHashtag (@PathVariable Long id) {
         myhashtagService.deleteMyHashtag(id);
         return ResponseEntity.ok().build();
