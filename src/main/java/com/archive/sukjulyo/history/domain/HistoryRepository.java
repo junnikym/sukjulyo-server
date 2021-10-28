@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface HistoryRepository extends JpaRepository<History, Long> {
+    Optional<History> findById(Long id);
     Optional<History> findByClient(Client client);
 }
 
