@@ -37,9 +37,4 @@ public class HashtagController {
     public ResponseEntity updateHashtag(@RequestBody HashtagCreationRequest request, @PathVariable Long id) {
         return ResponseEntity.ok(hashtagService.updateHashtag(request, id));
     }
-
-    @GetMapping("/")
-    public String home() {
-        return "home";
-    }
 }

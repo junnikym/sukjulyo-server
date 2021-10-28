@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class ClientController {
     private final ClientService clientService;
 
-    @GetMapping("/selectAll")
+    @GetMapping("/select")
     public ResponseEntity selectClient(@RequestParam(required = false) Long id) {
         if (id == null)
             return ResponseEntity.ok(clientService.selectClients());
