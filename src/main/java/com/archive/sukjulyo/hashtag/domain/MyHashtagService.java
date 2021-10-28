@@ -17,11 +17,11 @@ public class MyHashtagService {
     ClientRepository clientRepository;
 
     //SELECT MyHashtag
-    public MyHashtag readMyHashtag(Long id) {
+    public MyHashtag selectMyHashtag(Long id) {
         Optional<MyHashtag> myHashtag = myHashtagRepository.findByClient(clientRepository.getById(id));
         if (myHashtag.isPresent())
             return myHashtag.get();
-        throw new EntityNotFoundException("Cant find any MyHashtag in this Client");
+        throw new EntityNotFoundException("Can not find any MyHashtag in this Client");
     }
 
     //CREATE MyHashtag
@@ -35,5 +35,23 @@ public class MyHashtagService {
         BeanUtils.copyProperties(myhashtag, myhashtagToCreate);
         myhashtagToCreate.setClient(client.get());
         return myHashtagRepository.save(myhashtagToCreate);
+    }
+
+    //UPDATE MyHashtag
+    public MyHashtag updateMyHashtag(Long id, MyHashtagCreationRequest request) {
+        Optional<MyHashtag> optionalMyHashtag = myHashtagRepository.findById(id);
+        if (!optionalMyHashtag.isPresent())
+                throw new EntityNotFoundException("MyHashtag not present in the database");
+
+        MyHashtag myHashtag = optionalMyHashtag.get();
+        myHashtag.setClient(request.getClient());
+        myHashtag.setHashtag(request.getHashtag());
+        myHashtag.setScore(request.getScore());
+        return myHashtagRepository.save(myHashtag);
+    }
+
+    //DELETE MyHashtag
+    public void deleteMyHashtag(Long id) {
+        myHashtagRepository.deleteById(id);
     }
 }
