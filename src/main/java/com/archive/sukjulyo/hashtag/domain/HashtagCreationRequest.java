@@ -4,5 +4,5 @@ import lombok.Data;
 @Data
 public class HashtagCreationRequest {
     private String tag;
-    private String priority;
+    private int priority;
 }

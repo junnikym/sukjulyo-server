@@ -12,33 +12,32 @@ import org.springframework.web.bind.annotation.*;
 public class ClientController {
     private final ClientService clientService;
 
-    @GetMapping("/selectAll")
+    @GetMapping("/selectAllClient")
     public ResponseEntity selectClient(@RequestParam(required = false) Long id) {
-        System.out.println("readClient");
         if (id == null)
             return ResponseEntity.ok(clientService.selectClients());
         return ResponseEntity.ok(clientService.selectClient(id));
     }
 
-    @GetMapping("/select/{refreshtoken}")
+    @GetMapping("/selectClient/{refreshtoken}")
     public ResponseEntity selectClient(@PathVariable String refreshtoken) {
         return ResponseEntity.ok(clientService.selectClient(refreshtoken));
     }
 
-    @PostMapping("/create")
+    @GetMapping("/create/domain")
     public ResponseEntity createClient(@RequestBody ClientCreationRequest request) {
         return ResponseEntity.ok(clientService.createClient(request));
-    }
-
-    @PostMapping("/update")
-    public ResponseEntity updateClient(Long id, @RequestBody ClientCreationRequest request) {
-        return ResponseEntity.ok(clientService.updateClient(id, request));
     }
 
     @GetMapping("/delete/{id}")
     public ResponseEntity deleteClient (@PathVariable Long id) {
         clientService.deleteClient(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/")
+    public String home() {
+        return "home";
     }
 
 }
