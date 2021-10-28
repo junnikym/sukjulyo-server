@@ -38,7 +38,6 @@ public class ClientService {
         throw new EntityNotFoundException("Cant find any Client under given refresh_token");
     }
 
-
     //CREATE Client
     public Client createClient(ClientCreationRequest request) {
         Client client = new Client();

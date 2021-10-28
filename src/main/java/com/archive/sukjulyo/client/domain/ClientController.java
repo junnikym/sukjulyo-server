@@ -14,7 +14,6 @@ public class ClientController {
 
     @GetMapping("/selectAllClient")
     public ResponseEntity selectClient(@RequestParam(required = false) Long id) {
-        System.out.println("readClient");
         if (id == null)
             return ResponseEntity.ok(clientService.selectClients());
         return ResponseEntity.ok(clientService.selectClient(id));
@@ -25,7 +24,7 @@ public class ClientController {
         return ResponseEntity.ok(clientService.selectClient(refreshtoken));
     }
 
-    @GetMapping("create/domain")
+    @GetMapping("/create/domain")
     public ResponseEntity createClient(@RequestBody ClientCreationRequest request) {
         return ResponseEntity.ok(clientService.createClient(request));
     }

@@ -11,5 +11,4 @@ public class SukjulyoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SukjulyoApplication.class, args);
 	}
-
 }

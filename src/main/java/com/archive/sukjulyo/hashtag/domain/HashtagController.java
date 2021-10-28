@@ -2,27 +2,44 @@ package com.archive.sukjulyo.hashtag.domain;
 
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/Hashtag")
+@RequestMapping(value = "/hashtag")
 @RequiredArgsConstructor
 public class HashtagController {
     private final HashtagService hashtagService;
 
-    @GetMapping("/selectHashtag")
-    public List<Hashtag> selectHashtags() {
-        return this.hashtagService.selectHashtags();
+    @GetMapping("/select")
+    public ResponseEntity selectHashtag(@RequestParam(required = false) Long id) {
+        if (id == null)
+            return ResponseEntity.ok(hashtagService.selectHashtags());
+        return ResponseEntity.ok(hashtagService.selectHashtag(id));
     }
 
-//    @RequestMapping(value = "/hashtag")
-//    public
+    @PostMapping("/create")
+    public ResponseEntity createHashtag(@RequestBody HashtagCreationRequest request) {
+        return ResponseEntity.ok(hashtagService.createHashtag(request));
+    }
 
-    @RequestMapping(value = "/join", method = RequestMethod.GET)
-    public long createHashtag(@PathVariable String tag) {
-        return hashtagService.join(new Hashtag(tag, 1));
+    @GetMapping("/delete/{id}")
+    public ResponseEntity deleteHashtag(@PathVariable Long id) {
+        hashtagService.deleteHashtag(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("update/{id}")
+    public ResponseEntity updateHashtag(@RequestBody HashtagCreationRequest request, @PathVariable Long id) {
+        return ResponseEntity.ok(hashtagService.updateHashtag(request, id));
+    }
+
+    @GetMapping("/")
+    public String home() {
+        return "home";
     }
 }

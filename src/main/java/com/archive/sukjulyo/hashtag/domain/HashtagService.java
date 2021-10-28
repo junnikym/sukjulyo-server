@@ -1,8 +1,8 @@
 package com.archive.sukjulyo.hashtag.domain;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -13,32 +13,43 @@ import java.util.Optional;
 public class HashtagService {
     private final HashtagRepository hashtagRepository;
 
-    public Long join(Hashtag hashtag) {
-        validateDuplicateHashtag(hashtag);
-        hashtagRepository.save(hashtag);
-        return hashtag.getId();
+    //SELECT Hashtag
+    public Hashtag selectHashtag(Long id) {
+        Optional<Hashtag> hashtag = hashtagRepository.findById(id);
+        if (hashtag.isPresent())
+            return hashtag.get();
+
+        throw new EntityNotFoundException("Cant find any hashtag under given ID");
     }
 
-    private void validateDuplicateHashtag(Hashtag hashtag) {
-        hashtagRepository.findByTag(hashtag.getTag())
-                .ifPresent(m -> {throw new IllegalStateException("이미 존재하는 해시태그입니다.");});
+    //SELECT ALL Hashtag
+    public List<Hashtag> selectHashtags() {
+        return hashtagRepository.findAll();
     }
 
-        //SELECT Hashtag
-        public Hashtag selectHashtag (String tag)
-        {
-            Optional<Hashtag> hashtag = hashtagRepository.findByTag(tag);
-            if (hashtag.isPresent()) {
-                return hashtag.get();
-            }
-            throw new EntityNotFoundException("Cant find any Hashtag under given TAG");
+    //CREATE Hashtag
+    public Hashtag createHashtag(HashtagCreationRequest request) {
+        Hashtag hashtag = new Hashtag();
+        BeanUtils.copyProperties(request, hashtag);
+        return hashtagRepository.save(hashtag);
+    }
+
+    //DELETE Hashtag
+    public void deleteHashtag(Long id) {
+        hashtagRepository.deleteById(id);
+    }
+
+    //UPDATE Hashtag
+    public Hashtag updateHashtag(HashtagCreationRequest request, Long id) {
+        Optional<Hashtag> optionalHashtag = hashtagRepository.findById(id);
+        if (!optionalHashtag.isPresent()) {
+            throw new EntityNotFoundException("Hashtag not present in the database");
         }
-    public Optional<Hashtag> findOne(Long hashtagId) {
-        return hashtagRepository.findById(hashtagId);
-    }
 
-        //SELECT HashtagAll
-        public List<Hashtag> selectHashtags() {
-            return hashtagRepository.findAll();
-        }
+        Hashtag hashtag = optionalHashtag.get();
+        hashtag.setTag(request.getTag());
+        hashtag.setPriority(request.getPriority());
+        return hashtagRepository.save(hashtag);
     }
+}
+
