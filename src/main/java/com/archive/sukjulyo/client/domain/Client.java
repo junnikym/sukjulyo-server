@@ -2,25 +2,29 @@ package com.archive.sukjulyo.client.domain;
 
 import com.archive.sukjulyo.hashtag.domain.Hashtag;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
-@Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Getter @Setter
+@Builder
 @Entity
+@DynamicUpdate
 public class Client {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(length = 128, nullable = false)
-    private String refreshtoken;
+    private String refreshToken;
 
     @Column(length = 8, nullable = true)
-    private String agerange;
+    private String ageRange;
 
     @Column(length = 8, nullable = true)
     private String gender;
@@ -29,11 +33,9 @@ public class Client {
     @JoinColumn(name = "hashtag_id")
     private List<Hashtag> hashtags = new ArrayList<>();
 
-    @Builder
-    public Client(String refreshtoken, String agerange, String gender) {
-        this.refreshtoken = refreshtoken;
-        this.agerange = agerange;
-        this.gender = gender;
+    public void setHashtags (List<Hashtag> hashtags) {
+        this.hashtags = hashtags;
     }
+
 }
 

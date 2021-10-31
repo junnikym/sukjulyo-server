@@ -1,6 +1,7 @@
-package com.archive.sukjulyo.hashtag.domain;
+package com.archive.sukjulyo.hashtag.repository;
 
 import com.archive.sukjulyo.client.domain.Client;
+import com.archive.sukjulyo.hashtag.domain.Hashtag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

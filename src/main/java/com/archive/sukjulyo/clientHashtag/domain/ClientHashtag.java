@@ -1,15 +1,17 @@
-package com.archive.sukjulyo.hashtag.domain;
+package com.archive.sukjulyo.clientHashtag.domain;
 
 import com.archive.sukjulyo.client.domain.Client;
+import com.archive.sukjulyo.hashtag.domain.Hashtag;
 import lombok.*;
 
 import javax.persistence.*;
 
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
-@Setter
+@Builder
 @Entity
-public class MyHashtag {
+public class ClientHashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -24,11 +26,4 @@ public class MyHashtag {
 
     @Column(nullable = false)
     private int score;
-
-    @Builder
-    public MyHashtag(Client client, Hashtag hashtag, int score) {
-        this.client = client;
-        this.hashtag = hashtag;
-        this.score = score;
-    }
 }

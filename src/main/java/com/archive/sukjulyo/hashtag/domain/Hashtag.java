@@ -6,8 +6,9 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
-@Setter
+@Builder
 @Entity
 public class Hashtag {
     @Id

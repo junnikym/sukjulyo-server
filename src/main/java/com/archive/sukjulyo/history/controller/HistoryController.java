@@ -1,5 +1,7 @@
-package com.archive.sukjulyo.history.domain;
+package com.archive.sukjulyo.history.controller;
 
+import com.archive.sukjulyo.history.dto.HistoryCreationRequest;
+import com.archive.sukjulyo.history.service.HistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

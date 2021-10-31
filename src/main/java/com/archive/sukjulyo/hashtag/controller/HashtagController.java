@@ -1,5 +1,7 @@
-package com.archive.sukjulyo.hashtag.domain;
+package com.archive.sukjulyo.hashtag.controller;
 
+import com.archive.sukjulyo.hashtag.dto.HashtagCreationRequest;
+import com.archive.sukjulyo.hashtag.service.HashtagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

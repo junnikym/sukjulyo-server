@@ -1,5 +1,7 @@
-package com.archive.sukjulyo.liked.domain;
+package com.archive.sukjulyo.liked.controller;
 
+import com.archive.sukjulyo.liked.dto.LikedCreationRequest;
+import com.archive.sukjulyo.liked.service.LikedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

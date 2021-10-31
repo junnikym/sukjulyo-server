@@ -9,8 +9,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
-@Setter
+@Builder
 @Entity
 public class Liked {
     @Id
@@ -23,7 +24,7 @@ public class Liked {
 
     @Column(nullable = false)
     @ColumnDefault("true")
-    private boolean islike;
+    private boolean isLike;
 
     @CreationTimestamp
     private LocalDateTime create_at;
@@ -32,9 +33,4 @@ public class Liked {
 //    @JoinColumn(name = "news_id")
 //    private News news;
 
-
-    @Builder
-    public Liked(Client client) {
-        this.client = client;
-    }
 }

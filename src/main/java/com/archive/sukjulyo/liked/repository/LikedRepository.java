@@ -1,6 +1,7 @@
-package com.archive.sukjulyo.liked.domain;
+package com.archive.sukjulyo.liked.repository;
 
 import com.archive.sukjulyo.client.domain.Client;
+import com.archive.sukjulyo.liked.domain.Liked;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

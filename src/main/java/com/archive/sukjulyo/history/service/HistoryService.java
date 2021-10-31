@@ -1,5 +1,8 @@
-package com.archive.sukjulyo.history.domain;
+package com.archive.sukjulyo.history.service;
 
+import com.archive.sukjulyo.history.domain.History;
+import com.archive.sukjulyo.history.dto.HistoryCreationRequest;
+import com.archive.sukjulyo.history.repository.HistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -15,11 +18,11 @@ public class HistoryService {
 
     //SELECT History
     public History selectHistory(Long id) {
-        Optional<History> history = historyRepository.findById(id);
-        if (history.isPresent())
-            return history.get();
-
-        throw new EntityNotFoundException("Cant find any history under given ID");
+        return historyRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Can't find any history"
+                ));
     }
 
     //SELECT ALL history
@@ -28,10 +31,8 @@ public class HistoryService {
     }
 
     //CREATE History
-    public History createHistory(HistoryCreationRequest request) {
-        History history = new History();
-        BeanUtils.copyProperties(request, history);
-        return historyRepository.save(history);
+    public History createHistory(HistoryCreationRequest dto) {
+        return historyRepository.save(dto.toEntity());
     }
 
     //DELETE History
