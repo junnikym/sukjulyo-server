@@ -6,10 +6,13 @@ import com.archive.sukjulyo.hashtag.domain.Hashtag;
 import lombok.Data;
 
 @Data
-public class ClientHashtagCreationRequest {
+public class ClientHashtagCreateDTO {
+    private Long clientId;
+    private Long hashtagId;
+
     private Client client;
     private Hashtag hashtag;
-    private int score;
+    private Integer score;
 
     public ClientHashtag toEntity() {
         return ClientHashtag.builder()

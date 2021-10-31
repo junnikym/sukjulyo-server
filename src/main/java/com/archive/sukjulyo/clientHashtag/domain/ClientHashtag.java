@@ -3,14 +3,16 @@ package com.archive.sukjulyo.clientHashtag.domain;
 import com.archive.sukjulyo.client.domain.Client;
 import com.archive.sukjulyo.hashtag.domain.Hashtag;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Getter
+@Getter @Setter
 @Builder
 @Entity
+@DynamicInsert
 public class ClientHashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -25,5 +27,5 @@ public class ClientHashtag {
     private Hashtag hashtag;
 
     @Column(nullable = false)
-    private int score;
+    private Integer score;
 }

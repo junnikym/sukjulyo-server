@@ -2,14 +2,16 @@ package com.archive.sukjulyo.hashtag.domain;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Getter
+@Getter @Setter
 @Builder
 @Entity
+@DynamicInsert
 public class Hashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -20,12 +22,6 @@ public class Hashtag {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int priority;
+    private Integer priority;
 
-
-    @Builder
-    public Hashtag(String tag, int priority) {
-        this.tag = tag;
-        this.priority = priority;
-    }
 }

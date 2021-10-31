@@ -1,15 +1,14 @@
 package com.archive.sukjulyo.hashtag.service;
 
 import com.archive.sukjulyo.hashtag.domain.Hashtag;
-import com.archive.sukjulyo.hashtag.dto.HashtagCreationRequest;
+import com.archive.sukjulyo.hashtag.dto.HashtagCreateDTO;
 import com.archive.sukjulyo.hashtag.repository.HashtagRepository;
+import com.archive.sukjulyo.util.PropertyUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,20 +30,19 @@ public class HashtagService {
     }
 
     //CREATE Hashtag
-    public Hashtag createHashtag(HashtagCreationRequest dto) {
+    public Hashtag createHashtag(HashtagCreateDTO dto) {
         return hashtagRepository.save(dto.toEntity());
     }
 
     //UPDATE Hashtag
-    public Hashtag updateHashtag(HashtagCreationRequest dto, Long id) {
-        Hashtag optionalHashtag = hashtagRepository
+    public Hashtag updateHashtag(Long id, HashtagCreateDTO dto) {
+        Hashtag hashtag = hashtagRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Can't find target client"
                 ));
 
-        // fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuck
-        Hashtag hashtag = dto.toEntity();
+        BeanUtils.copyProperties(dto, hashtag, PropertyUtil.getNullPropertyNames(dto));
 
         return hashtagRepository.save(hashtag);
     }

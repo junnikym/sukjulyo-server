@@ -3,8 +3,10 @@ package com.archive.sukjulyo.clientHashtag.service;
 import com.archive.sukjulyo.client.domain.Client;
 import com.archive.sukjulyo.client.repository.ClientRepository;
 import com.archive.sukjulyo.clientHashtag.domain.ClientHashtag;
-import com.archive.sukjulyo.clientHashtag.dto.ClientHashtagCreationRequest;
+import com.archive.sukjulyo.clientHashtag.dto.ClientHashtagCreateDTO;
 import com.archive.sukjulyo.clientHashtag.repository.ClientHashtagRepository;
+import com.archive.sukjulyo.hashtag.repository.HashtagRepository;
+import com.archive.sukjulyo.util.PropertyUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClientHashtagService {
 
-    ClientHashtagRepository clientHashtagRepository;
-    ClientRepository clientRepository;
+    private final HashtagRepository hashtagRepository;
+    private final ClientHashtagRepository clientHashtagRepository;
+    private final ClientRepository clientRepository;
 
     //SELECT ClientHashtag
     public ClientHashtag selectClientHashtag(Long id) {
@@ -29,26 +32,35 @@ public class ClientHashtagService {
     }
 
     //CREATE ClientHashtag
-    public ClientHashtag createClientHashtag(ClientHashtagCreationRequest clientHashtag) {
-//        Client client = clientRepository
-//                .findById(clientHashtag.getClient().getId())
-//                .orElseThrow(() -> new IllegalArgumentException(
-//                        "Can't find target client"
-//                ));
+    public ClientHashtag createClientHashtag(ClientHashtagCreateDTO dto) {
+        dto.setClient(
+                clientRepository
+                        .findById(dto.getClientId())
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                "Can't find target client"
+                        ))
+        );
 
-        return clientHashtagRepository.save(clientHashtag.toEntity());
+        dto.setHashtag(
+                hashtagRepository
+                        .findById(dto.getHashtagId())
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                "Can't find target client"
+                        ))
+        );
+
+        return clientHashtagRepository.save(dto.toEntity());
     }
 
     //UPDATE ClientHashtag
-    public ClientHashtag updateClientHashtag(Long id, ClientHashtagCreationRequest dto) {
-        ClientHashtag optionalClientHashtag = clientHashtagRepository
+    public ClientHashtag updateClientHashtag(Long id, ClientHashtagCreateDTO dto) {
+        ClientHashtag clientHashtag = clientHashtagRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Can't find any target client's hashtags"
                 ));
 
-        // fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuck
-        ClientHashtag clientHashtag = dto.toEntity();
+        BeanUtils.copyProperties(dto, clientHashtag, PropertyUtil.getNullPropertyNames(dto));
 
         return clientHashtagRepository.save(clientHashtag);
     }

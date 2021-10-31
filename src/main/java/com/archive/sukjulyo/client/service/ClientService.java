@@ -55,7 +55,6 @@ public class ClientService {
                         "Can't find target client"
                 ));
 
-        System.out.println(client.getRefreshToken());
         BeanUtils.copyProperties(dto, client, PropertyUtil.getNullPropertyNames(dto));
 
         return clientRepository.save(client);
