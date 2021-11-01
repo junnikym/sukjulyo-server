@@ -7,7 +7,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class HistoryCreationRequest {
+public class HistoryCreationDTO {
+    private Long clientId;
+
     private Client client;
     private LocalDateTime create_at;
 

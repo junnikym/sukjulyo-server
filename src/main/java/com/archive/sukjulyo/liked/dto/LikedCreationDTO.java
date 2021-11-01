@@ -7,14 +7,16 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class LikedCreationRequest {
+public class LikedCreationDTO {
+    private Long clientId;
+
     private Client client;
-    private boolean islike;
+    private Boolean isLike;
 
     public Liked toEntity() {
         return Liked.builder()
-                .client(client)
-                .isLike(islike)
+                .client(this.client)
+                .isLike(this.isLike)
                 .build();
     }
 }

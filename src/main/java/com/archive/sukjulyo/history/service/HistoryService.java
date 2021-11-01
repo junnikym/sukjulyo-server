@@ -1,7 +1,9 @@
 package com.archive.sukjulyo.history.service;
 
+import com.archive.sukjulyo.client.domain.Client;
+import com.archive.sukjulyo.client.repository.ClientRepository;
 import com.archive.sukjulyo.history.domain.History;
-import com.archive.sukjulyo.history.dto.HistoryCreationRequest;
+import com.archive.sukjulyo.history.dto.HistoryCreationDTO;
 import com.archive.sukjulyo.history.repository.HistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HistoryService {
     private final HistoryRepository historyRepository;
+    private final ClientRepository clientRepository;
 
     //SELECT History
     public History selectHistory(Long id) {
@@ -26,12 +29,21 @@ public class HistoryService {
     }
 
     //SELECT ALL history
-    public List<History> selectHistorys() {
+    public List<History> selectHistoryList() {
         return historyRepository.findAll();
     }
 
     //CREATE History
-    public History createHistory(HistoryCreationRequest dto) {
+    public History createHistory(HistoryCreationDTO dto) {
+        dto.setClient(clientRepository
+                .findById(dto.getClientId())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Can't find target client"
+                ))
+        );
+
+        System.out.println(dto.toString());
+
         return historyRepository.save(dto.toEntity());
     }
 

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Getter
+@Getter @Setter
 @Builder
 @Entity
 public class Liked {
@@ -24,7 +24,7 @@ public class Liked {
 
     @Column(nullable = false)
     @ColumnDefault("true")
-    private boolean isLike;
+    private Boolean isLike;
 
     @CreationTimestamp
     private LocalDateTime create_at;

@@ -3,15 +3,13 @@ package com.archive.sukjulyo.liked.service;
 import com.archive.sukjulyo.client.domain.Client;
 import com.archive.sukjulyo.client.repository.ClientRepository;
 import com.archive.sukjulyo.liked.domain.Liked;
-import com.archive.sukjulyo.liked.dto.LikedCreationRequest;
+import com.archive.sukjulyo.liked.dto.LikedCreationDTO;
 import com.archive.sukjulyo.liked.repository.LikedRepository;
+import com.archive.sukjulyo.util.PropertyUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,28 +28,27 @@ public class LikedService {
     }
 
     //CREATE Liked
-    public Liked createLiked (LikedCreationRequest dto) {
-//        Optional<Client> client = clientRepository.findById(liked.getClient().getId());
-//        if (!client.isPresent()) {
-//            throw new EntityNotFoundException("Client Not Found");
-//        }
-//        Liked likedToCreate = new Liked();
-//        BeanUtils.copyProperties(liked, likedToCreate);
-//        likedToCreate.setClient(client.get());
+    public Liked createLiked (LikedCreationDTO dto) {
+        dto.setClient(clientRepository
+                .findById(dto.getClientId())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Can't find target client"
+                ))
+        );
+
         return likedRepository.save(dto.toEntity());
     }
 
     //UPDATE Liked
-    public Liked updateLiked(Long id, LikedCreationRequest dto) {
-//        Optional<Liked> optionalLiked = likedRepository.findById(id);
-//        if (!optionalLiked.isPresent())
-//            throw new EntityNotFoundException("Liked not preset int the database");
-//
-//        Liked liked = optionalLiked.get();
-//        liked.setClient(request.getClient());
-//        liked.setIslike(request.isIslike());
-//        liked.setCreate_at(request.getCreate_at());
-        return likedRepository.save(dto.toEntity());
+    public Liked updateLiked(Long id, LikedCreationDTO dto) {
+        Liked liked = likedRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Can't find target liked entity"
+                ));
+
+        BeanUtils.copyProperties(dto, liked, PropertyUtil.getNullPropertyNames(dto));
+
+        return likedRepository.save(liked);
     }
 
     //DELETE Liked

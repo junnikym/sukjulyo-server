@@ -28,9 +28,4 @@ public class History {
 //    @JoinColumn(name = "news_id")
 //    private News news;
 
-
-    @Builder
-    public History(Client client) {
-        this.client = client;
-    }
 }
