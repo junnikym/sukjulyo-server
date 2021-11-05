@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +28,33 @@ public class HashtagService {
     //SELECT ALL Hashtag
     public List<Hashtag> selectHashtags() {
         return hashtagRepository.findAll();
+    }
+
+    /**
+     * Save muliple strings as Hashtags
+     *
+     * @param tags : Strings to be used as tags
+     * @return Saved hashtag entities
+     */
+    public List<Hashtag> selectAndCreateHashtag(List<String> tags) {
+        List<Hashtag> result = new ArrayList<Hashtag>();
+
+        for(String it : tags) {
+            Hashtag hashtag = hashtagRepository
+                    .findByTag(it)
+                    .orElseGet( () ->{
+                        return hashtagRepository.save(
+                                Hashtag.builder()
+                                    .tag(it)
+                                    .news(null)
+                                    .build()
+                        );
+                    });
+
+            result.add(hashtag);
+        }
+
+        return result;
     }
 
     //CREATE Hashtag

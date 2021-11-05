@@ -1,8 +1,10 @@
 package com.archive.sukjulyo.hashtag.dto;
 import com.archive.sukjulyo.hashtag.domain.Hashtag;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class HashtagCreateDTO {
     private String tag;
     private Integer priority = 0;
