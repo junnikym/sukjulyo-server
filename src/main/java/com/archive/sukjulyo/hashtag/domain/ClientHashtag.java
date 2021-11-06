@@ -1,28 +1,27 @@
-package com.archive.sukjulyo.clientHashtag.domain;
+package com.archive.sukjulyo.hashtag.domain;
 
 import com.archive.sukjulyo.client.domain.Client;
-import com.archive.sukjulyo.hashtag.domain.Hashtag;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter @Setter
 @Builder
 @Entity
-@DynamicInsert
-public class ClientHashtag {
+public class ClientHashtag implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
 

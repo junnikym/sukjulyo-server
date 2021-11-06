@@ -29,13 +29,5 @@ public class Client {
     @Column(length = 8, nullable = true)
     private String gender;
 
-    @OneToMany
-    @JoinColumn(name = "hashtag_id")
-    private List<Hashtag> hashtags = new ArrayList<>();
-
-    public void setHashtags (List<Hashtag> hashtags) {
-        this.hashtags = hashtags;
-    }
-
 }
 

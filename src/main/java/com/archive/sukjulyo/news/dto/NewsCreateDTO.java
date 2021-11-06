@@ -33,7 +33,7 @@ public class NewsCreateDTO implements Serializable {
 				.description(this.description)
 				.author(this.author)
 				.pubDate(this.pubDate)
-				.hashtag(hashtagEntities)
+				.hashtags(hashtagEntities)
 				.build();
 	}
 

@@ -28,7 +28,7 @@ public class Hashtag implements Serializable {
     @ColumnDefault("0")
     private Integer priority;
 
-    @ManyToMany(mappedBy="hashtag")
+    @ManyToMany(mappedBy="hashtags")
     @JsonBackReference
     private List<News> news = new ArrayList<>();
 

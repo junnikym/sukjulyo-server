@@ -27,7 +27,7 @@ public class News implements Serializable {
 	@Column(length = 128, nullable = false)
 	private String title;
 
-	@Column(length = 256, nullable = true /*, unique = true*/)
+	@Column(length = 256, nullable = true, unique = true)
 	private String link;
 
 	@Column(columnDefinition = "TEXT", nullable = true)
@@ -46,6 +46,6 @@ public class News implements Serializable {
 			inverseJoinColumns=@JoinColumn(name = "hashatg_fk")
 	)
 	@JsonManagedReference
-	private List<Hashtag> hashtag = new ArrayList<>();
+	private List<Hashtag> hashtags = new ArrayList<>();
 
 }

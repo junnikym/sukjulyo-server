@@ -1,10 +1,13 @@
 package com.archive.sukjulyo.hashtag.controller;
 
 import com.archive.sukjulyo.hashtag.dto.HashtagCreateDTO;
+import com.archive.sukjulyo.hashtag.dto.HashtagFreqRequestDTO;
 import com.archive.sukjulyo.hashtag.service.HashtagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping(value = "/hashtag")
@@ -22,6 +25,28 @@ public class HashtagController {
 
         return ResponseEntity.ok(hashtagService.selectHashtag(id));
     }
+
+
+    /**
+     * Select hashtag's frequency registed between start_t and end_t
+     *
+     * @param limit : limit number of hashtag
+     * @param startTime : Time to hashtags started being registered
+     * @param endTime : Hashtags registered until this time
+     * @return Hashtag and Frequency
+     */
+    @GetMapping(value = "issue")
+    public ResponseEntity selectHashtag(
+            @RequestParam("limit") Integer limit,
+            @RequestParam("start_t") LocalDateTime startTime,
+            @RequestParam("end_t") LocalDateTime endTime
+    ) {
+        return ResponseEntity.ok(
+                hashtagService.selectIssueHahstag(
+                        new HashtagFreqRequestDTO(limit, startTime, endTime))
+        );
+    }
+
 
 
     @PostMapping()

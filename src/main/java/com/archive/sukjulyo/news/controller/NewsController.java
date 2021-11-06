@@ -17,8 +17,6 @@ public class NewsController {
 
 	@PostMapping()
 	public ResponseEntity createNews(@RequestBody NewsCreateDTO dto) {
-		System.out.println("start create news - controller");
-
 		return ResponseEntity.ok(newsService.createNews(dto));
 	}
 

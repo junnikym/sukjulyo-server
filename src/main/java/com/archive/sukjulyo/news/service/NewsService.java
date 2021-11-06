@@ -25,8 +25,6 @@ public class NewsService {
 	 */
 	public News createNews(NewsCreateDTO dto) {
 
-		System.out.println("start create news");
-
 		/**
 		 * Find hashtags in DB,
 		 * If hashtag does not exist, create it
