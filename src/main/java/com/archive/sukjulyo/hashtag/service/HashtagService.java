@@ -3,7 +3,7 @@ package com.archive.sukjulyo.hashtag.service;
 import com.archive.sukjulyo.hashtag.domain.Hashtag;
 import com.archive.sukjulyo.hashtag.dto.HashtagCreateDTO;
 import com.archive.sukjulyo.hashtag.dto.HashtagFreqRequestDTO;
-import com.archive.sukjulyo.hashtag.dto.HashtagFreqResponseDTO;
+import com.archive.sukjulyo.hashtag.dto.HashtagFreqResponseVO;
 import com.archive.sukjulyo.hashtag.repository.HashtagRepository;
 import com.archive.sukjulyo.util.PropertyUtil;
 import lombok.RequiredArgsConstructor;
@@ -38,14 +38,14 @@ public class HashtagService {
      * @param dto : DTO for select hashtag's frequency
      * @return Hashtag and Frequency
      */
-    public List<HashtagFreqResponseDTO> selectIssueHahstag(
+    public List<HashtagFreqResponseVO> selectHahstagFreq(
             HashtagFreqRequestDTO dto
     ) {
         return hashtagRepository.findHashtagFreqByDate(
                 dto.getLimit(),
-                dto.getStartTime(),
-                dto.getEndTime()
-        ).orElseThrow(() -> new IllegalArgumentException("Can't find target client"));
+                dto.getStart(),
+                dto.getEnd()
+        );//.orElseThrow(() -> new IllegalArgumentException("Can't find target client"));
     }
 
     /**

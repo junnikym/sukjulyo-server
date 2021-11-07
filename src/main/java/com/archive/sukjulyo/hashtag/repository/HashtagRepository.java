@@ -1,7 +1,7 @@
 package com.archive.sukjulyo.hashtag.repository;
 
 import com.archive.sukjulyo.hashtag.domain.Hashtag;
-import com.archive.sukjulyo.hashtag.dto.HashtagFreqResponseDTO;
+import com.archive.sukjulyo.hashtag.dto.HashtagFreqResponseVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,22 +16,20 @@ public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
 
     Optional<Hashtag> findByTag(String tag);
 
-    private static final String _findHashtagFreq =
-            "SELECT h.tag AS tag, COUNT(*) AS freq" +
-            "    FROM news_hashtag AS nh" +
-            "    LEFT JOIN hashtag AS h ON nh.hashatag_fk = h.id" +
-            "    LEFT JOIN news AS n ON nh.news_fk = n.id" +
-            "    WHERE n.pub_date" +
-            "       BETWEEN :start_t" +
-            "       AND :end_t" +
-            "    GROUP BY nh.hashatag_fk" +
-            "    ORDER BY freq DESC;"+
-            "    LIMIT :limit_n";
-    @Query(value = _findHashtagFreq, nativeQuery = true)
-    Optional<List<HashtagFreqResponseDTO>> findHashtagFreqByDate(
+    @Query(value = "SELECT h.tag AS tag, COUNT(*) AS freq"
+                    + "    FROM news_hashtag AS nh"
+                    + "    LEFT JOIN hashtag AS h ON nh.hashatag_fk = h.id"
+                    + "    LEFT JOIN news AS n ON nh.news_fk = n.id"
+                    + "    WHERE DATE(n.pub_date)"
+                    + "       BETWEEN :start_t"
+                    + "       AND :end_t"
+                    + "    GROUP BY nh.hashatag_fk"
+                    + "    ORDER BY freq DESC"
+                    + "    LIMIT :limit_n",
+            nativeQuery = true)
+    List<HashtagFreqResponseVO> findHashtagFreqByDate(
             @Param("limit_n")   int n,
             @Param("start_t")   LocalDateTime startTime,
             @Param("end_t")     LocalDateTime endTime
     );
 }
-

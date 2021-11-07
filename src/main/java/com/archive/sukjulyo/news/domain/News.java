@@ -43,7 +43,7 @@ public class News implements Serializable {
 	@JoinTable(
 			name="news_hashtag",
 			joinColumns=@JoinColumn(name = "news_fk"),
-			inverseJoinColumns=@JoinColumn(name = "hashatg_fk")
+			inverseJoinColumns=@JoinColumn(name = "hashatag_fk")
 	)
 	@JsonManagedReference
 	private List<Hashtag> hashtags = new ArrayList<>();

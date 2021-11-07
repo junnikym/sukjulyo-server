@@ -3,6 +3,7 @@ package com.archive.sukjulyo.hashtag.controller;
 import com.archive.sukjulyo.hashtag.dto.HashtagCreateDTO;
 import com.archive.sukjulyo.hashtag.dto.HashtagFreqRequestDTO;
 import com.archive.sukjulyo.hashtag.service.HashtagService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,20 +31,17 @@ public class HashtagController {
     /**
      * Select hashtag's frequency registed between start_t and end_t
      *
-     * @param limit : limit number of hashtag
-     * @param startTime : Time to hashtags started being registered
-     * @param endTime : Hashtags registered until this time
+     * @param dto : DTO for request Hashtag frequency
+     *      limit - limit number of hashtag
+     *      start - Time to hashtags started being registered
+     *      end - Hashtags registered until this time
      * @return Hashtag and Frequency
      */
-    @GetMapping(value = "issue")
-    public ResponseEntity selectHashtag(
-            @RequestParam("limit") Integer limit,
-            @RequestParam("start_t") LocalDateTime startTime,
-            @RequestParam("end_t") LocalDateTime endTime
-    ) {
+    @GetMapping(value = "freq")
+    public ResponseEntity selectHashtag(HashtagFreqRequestDTO dto) {
+        System.out.println(dto.toString());
         return ResponseEntity.ok(
-                hashtagService.selectIssueHahstag(
-                        new HashtagFreqRequestDTO(limit, startTime, endTime))
+                hashtagService.selectHahstagFreq(dto)
         );
     }
 
