@@ -39,7 +39,6 @@ public class HashtagController {
      */
     @GetMapping(value = "freq")
     public ResponseEntity selectHashtag(HashtagFreqRequestDTO dto) {
-        System.out.println(dto.toString());
         return ResponseEntity.ok(
                 hashtagService.selectHahstagFreq(dto)
         );

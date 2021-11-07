@@ -5,6 +5,9 @@ import com.archive.sukjulyo.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,6 +16,19 @@ import org.springframework.web.bind.annotation.*;
 @Lazy
 public class ClientController {
     private final ClientService clientService;
+
+    @Secured({"ROLE_ADMIN","ROLE_USER"})
+    @GetMapping("/test_good")
+    public String test_good() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return "<html> "+auth.toString()+" </html>";
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @GetMapping("/test_bad")
+    public String test_bad() {
+        return "<html> bad </html>";
+    }
 
     @GetMapping()
     public ResponseEntity selectClient(@RequestParam(required = false) Long id) {

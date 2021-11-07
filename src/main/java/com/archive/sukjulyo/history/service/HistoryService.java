@@ -42,8 +42,6 @@ public class HistoryService {
                 ))
         );
 
-        System.out.println(dto.toString());
-
         return historyRepository.save(dto.toEntity());
     }
 
