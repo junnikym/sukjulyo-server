@@ -30,7 +30,7 @@ build/
 !**/src/test/**/build/
 
 **/database.properties
-**/oauth.yaml
+**/oauth.properties
 
 ### VS Code ###
 .vscode/

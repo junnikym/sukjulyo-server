@@ -38,8 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.defaultSuccessUrl("/auth?is_success=true")
 				.failureUrl("/auth?is_success=false")
 			.and()
-				.exceptionHandling()
-				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
+				.exceptionHandling();
+//				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
 	}
 
 	@Bean
