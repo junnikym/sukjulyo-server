@@ -28,6 +28,10 @@ public class Hashtag implements Serializable {
     @ColumnDefault("0")
     private Integer priority;
 
+    @Column(name = "noise")
+    @ColumnDefault("false")
+    private Boolean isNoise;
+
     @ManyToMany(mappedBy="hashtags")
     @JsonBackReference
     private List<News> news = new ArrayList<>();

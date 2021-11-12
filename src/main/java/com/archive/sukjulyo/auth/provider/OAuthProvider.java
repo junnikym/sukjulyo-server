@@ -1,4 +1,4 @@
-package com.archive.sukjulyo.client.provider;
+package com.archive.sukjulyo.auth.provider;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;

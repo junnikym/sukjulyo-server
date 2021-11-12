@@ -17,7 +17,12 @@ import java.util.List;
 public class ClientService {
     private final ClientRepository clientRepository;
 
-    //SELECT Client
+    /**
+     * Select Client by client's primary key ID
+     *
+     * @param id : clinet's parimary key
+     * @return Client entity
+     */
     public Client selectClient(Long id) {
         Client client = clientRepository
                 .findById(id)
@@ -43,20 +48,21 @@ public class ClientService {
         return client;
     }
 
-    //CREATE Client
-    public Client createClient(ClientCreateDTO dto) {
-        return clientRepository.save(dto.toEntity());
-    }
+    /**
+     * Select client and update data
+     * if not exist client, Create new client
+     *
+     * @param client : Put in here depending on the function you want
+     *               like this ( [update] -> client entity, [create] -> NULL )
+     * @param dto : DTO for create client
+     * @return Client Entity
+     */
+    public Client saveAndUpdateClient(Client client, ClientCreateDTO dto) {
 
-    //UPDATE Client
-    public Client updateClient(Long id, ClientCreateDTO dto) {
-        Client client = clientRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Can't find target client"
-                ));
+        if(client == null)
+            return clientRepository.save(dto.toEntity());
 
         BeanUtils.copyProperties(dto, client, PropertyUtil.getNullPropertyNames(dto));
-
         return clientRepository.save(client);
     }
 

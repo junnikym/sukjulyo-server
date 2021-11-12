@@ -27,9 +27,7 @@ public class HashtagService {
     public Hashtag selectHashtag(Long id) {
         return hashtagRepository
                 .findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Can't find target client"
-                ));
+                .orElseGet( ()->{ return null; } );
     }
 
     /**

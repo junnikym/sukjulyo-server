@@ -42,18 +42,18 @@ public class ClientController {
         return ResponseEntity.ok(clientService.selectClient(refreshToken));
     }
 
-    @PostMapping()
-    public ResponseEntity createClient(@RequestBody ClientCreateDTO dto) {
-        return ResponseEntity.ok(clientService.createClient(dto));
-    }
+//    @PostMapping()
+//    public ResponseEntity createClient(@RequestBody ClientCreateDTO dto) {
+//        return ResponseEntity.ok(clientService.createClient(dto));
+//    }
 
-    @PutMapping()
-    public ResponseEntity updateClient(
-            @RequestParam(required = false) Long id,
-            @RequestBody ClientCreateDTO dto
-    ) {
-        return ResponseEntity.ok(clientService.updateClient(id, dto));
-    }
+//    @PutMapping()
+//    public ResponseEntity updateClient(
+//            @RequestParam(required = false) Long id,
+//            @RequestBody ClientCreateDTO dto
+//    ) {
+//        return ResponseEntity.ok(clientService.updateClient(id, dto));
+//    }
 
     @DeleteMapping()
     public ResponseEntity deleteClient (@RequestParam(required = false) Long id) {

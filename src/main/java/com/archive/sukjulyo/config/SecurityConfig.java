@@ -1,53 +1,111 @@
 package com.archive.sukjulyo.config;
 
-import com.archive.sukjulyo.client.provider.OAuthProvider;
-import com.archive.sukjulyo.client.service.OAuthService;
+import com.archive.sukjulyo.auth.filter.JwtAuthFilter;
+import com.archive.sukjulyo.auth.handler.LogoutSuccessHandler;
+import com.archive.sukjulyo.auth.handler.OAuthSuccessHandler;
+import com.archive.sukjulyo.auth.provider.OAuthProvider;
+import com.archive.sukjulyo.auth.service.OAuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.archive.sukjulyo.client.dto.LoginVO.KAKAO;
+import static javax.management.Query.and;
 
 @Configuration
 @EnableWebSecurity
 @PropertySource("classpath:oauth.properties")
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	private final OAuthSuccessHandler oAuthSuccessHandler;
+	private final LogoutSuccessHandler logoutSuccessHandler;
 
 	@Override
 	public void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.authorizeRequests()
-				.antMatchers("/", "/oauth2/**", "/login/**", "/css/**", "/images/**", "/js/**", "/console/**", "/favicon.ico/**")
-				.permitAll()
-				.antMatchers("/kakao").hasAuthority(KAKAO.getRoleType())
-				.anyRequest().authenticated()
+		httpSecurity
+				.headers().frameOptions().disable()
+				.addHeaderWriter(new StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM "+"http://localhost:19006"))
+
+			.and()
+				.httpBasic().disable()
+				.csrf().disable()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+			.and()
+				.authorizeRequests()
+					.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+					.antMatchers("/", "/oauth2/**", "/login/**", "/css/**", "/images/**", "/js/**", "/console/**", "/favicon.ico/**").permitAll()
+					.antMatchers("/kakao").hasAuthority(KAKAO.getRoleType())
+					.anyRequest().authenticated()
+
 			.and()
 				.oauth2Login()
-				.userInfoEndpoint().userService(new OAuthService())
+					.redirectionEndpoint()
+						.baseUri("/login/oauth2/code/*") // 디폴트는 login/oauth2/code/*
+				.and()
+					.userInfoEndpoint().userService(OAuth2UserService())
+				.and()
+					.successHandler(oAuthSuccessHandler)
+//					.failureUrl("/main.do")
+
 			.and()
-				.defaultSuccessUrl("/auth?is_success=true")
-				.failureUrl("/auth?is_success=false")
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
 			.and()
-				.exceptionHandling()
-				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
+				.logout()
+					.deleteCookies("JSESSIONID")
+					.logoutSuccessHandler(logoutSuccessHandler)
+
+			.and()
+				.addFilterBefore(jwtAuthFilter(), OAuth2AuthorizationRequestRedirectFilter.class)
+				.cors();
+//
+//				.userInfoEndpoint().userService(oAuthService)
+//			.and()
+//				.defaultSuccessUrl("http://localhost:19006")
+//				.failureUrl("/auth/check")
+//			.and()
+//				.cors()
+//			.and()
+//				.exceptionHandling()
+//				.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 	}
 
 	@Bean
 	public ClientRegistrationRepository clientRegistrationRepository(
 			@Value("${spring.security.oauth2.client.registration.kakao.client-id}") 		String kakaoClientId,
-			@Value("${spring.security.oauth2.client.registration.kakao.client-secret}") 	String kakaoClientSecret
+			@Value("${spring.security.oauth2.client.registration.kakao.client-secret}") 		String kakaoClientSecret
 	) {
-
 		List<ClientRegistration> registrations = new ArrayList<>();
 
 		registrations.add(
@@ -58,6 +116,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						.build());
 
 		return new InMemoryClientRegistrationRepository(registrations);
+	}
+
+	@Bean
+	public OAuth2UserService<OAuth2UserRequest, OAuth2User> OAuth2UserService() {
+		return new OAuthService();
+	}
+
+	@Bean
+	public JwtAuthFilter jwtAuthFilter() {
+		return new JwtAuthFilter();
+	}
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.addAllowedOrigin("http://localhost:19006");
+		configuration.addAllowedMethod("*");
+		configuration.addAllowedHeader("*");
+		configuration.setAllowCredentials(true);
+		configuration.setMaxAge(3600L);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 
 }
