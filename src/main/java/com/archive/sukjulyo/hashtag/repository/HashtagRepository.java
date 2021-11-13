@@ -17,15 +17,17 @@ public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
     Optional<Hashtag> findByTag(String tag);
 
     @Query(value = "SELECT h.tag AS tag, COUNT(*) AS freq"
-                    + "    FROM news_hashtag AS nh"
-                    + "    LEFT JOIN hashtag AS h ON nh.hashatag_fk = h.id"
-                    + "    LEFT JOIN news AS n ON nh.news_fk = n.id"
-                    + "    WHERE DATE(n.pub_date)"
-                    + "       BETWEEN :start_t"
-                    + "       AND :end_t"
-                    + "    GROUP BY nh.hashatag_fk"
-                    + "    ORDER BY freq DESC"
-                    + "    LIMIT :limit_n",
+                    + "     FROM news_hashtag AS nh"
+                    + "     LEFT JOIN hashtag AS h ON nh.hashatag_fk = h.id"
+                    + "     LEFT JOIN news AS n ON nh.news_fk = n.id"
+                    + "     WHERE ("
+                    + "         DATE(n.pub_date)"
+                    + "             BETWEEN :start_t"
+                    + "             AND :end_t"
+                    + "     ) AND h.noise = false"
+                    + "     GROUP BY nh.hashatag_fk"
+                    + "     ORDER BY freq DESC"
+                    + "     LIMIT :limit_n",
             nativeQuery = true)
     List<HashtagFreqResponseVO> findHashtagFreqByDate(
             @Param("limit_n")   int n,

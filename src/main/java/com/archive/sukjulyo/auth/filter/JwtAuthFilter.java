@@ -57,8 +57,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 		if (requestMatcher.matches(request)) {
 
-//			String jwt = getAuthenticationToken(request);
-			String jwt = cookieUtil.getcookieValue(request, env.getProperty("jwt.token-name"));
+			String jwt = getAuthenticationToken(request);
+			if (jwt.isEmpty())
+				jwt = cookieUtil.getcookieValue(request, env.getProperty("jwt.token-name"));
 
 			if (jwt.isEmpty()) {
 				logger.error("not exist jwt at request");
