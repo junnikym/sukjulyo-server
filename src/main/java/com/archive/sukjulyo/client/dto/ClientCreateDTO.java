@@ -14,17 +14,10 @@ import java.util.List;
 public class ClientCreateDTO implements Serializable {
 
     private Long id;
-    private String refreshToken;
-    private String ageRange;
-    private String gender;
-    private List<Hashtag> hashtags;
 
     public Client toEntity() {
         return Client.builder()
                 .id(id)
-                .refreshToken(this.refreshToken)
-                .ageRange(this.ageRange)
-                .gender(this.gender)
                 .build();
     }
 

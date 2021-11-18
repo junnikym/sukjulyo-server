@@ -24,29 +24,11 @@ public class ClientService {
      * @return Client entity
      */
     public Client selectClient(Long id) {
-        Client client = clientRepository
+        return clientRepository
                 .findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(
-                    "Can't find target client"
-                ));
-
-        return client;
+                .orElse(null);
     }
 
-    //SELECT ALL Clients
-    public List<Client> selectClientList() {
-        return clientRepository.findAll();
-    }
-
-    //SELECT Client By Refresh_token
-    public Client selectClient(String refreshToken) {
-        Client client = clientRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Can't find target client's refresh token"
-                ));
-
-        return client;
-    }
 
     /**
      * Select client and update data
@@ -66,7 +48,11 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
-    //DELETE Client
+    /**
+     * Delete Client
+     *
+     * @param id : client's PK id
+     */
     public void deleteClient(Long id){
         clientRepository.deleteById(id);
     }

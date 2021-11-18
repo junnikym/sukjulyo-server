@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Liked {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

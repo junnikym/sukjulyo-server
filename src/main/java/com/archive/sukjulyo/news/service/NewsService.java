@@ -35,9 +35,18 @@ public class NewsService {
 		 * Save it
 		 -------------------------------------------------- */
 		return newsRepository.save(
-				dto.toEntity(
-						hashtagService.selectAndCreateHashtag(tags)
+				dto.toEntity(hashtagService.selectAndCreateHashtag(tags)
 		));
+	}
+
+	/**
+	 * Check if data is exist on the DB by news link
+	 *
+	 * @param newsLink : link of news
+	 * @return Existence or not.
+	 */
+	public Boolean existsNews(String newsLink) {
+		return newsRepository.existsByLink(newsLink);
 	}
 
 	/**

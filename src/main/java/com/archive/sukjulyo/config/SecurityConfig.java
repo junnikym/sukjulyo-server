@@ -40,6 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final OAuthSuccessHandler oAuthSuccessHandler;
 	private final LogoutSuccessHandler logoutSuccessHandler;
 
+	@Value("${frontend-app.entry}")
+	private String frontUrl;
+
 	@Override
 	public void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
@@ -54,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					.antMatchers(
 							"/", "/oauth2/**", "/login/**",
 							"/css/**", "/images/**", "/js/**", "/console/**", "/favicon.ico/**",
-							"/hashtag/freq**").permitAll()
+							"/hashtag/**", "/news/**").permitAll()
 					.antMatchers("/kakao").hasAuthority(KAKAO.getRoleType())
 					.anyRequest().authenticated()
 
@@ -62,10 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.oauth2Login()
 					.redirectionEndpoint()
 						.baseUri("/login/oauth2/code/*") // 디폴트는 login/oauth2/code/*
-				.and()
-					.userInfoEndpoint().userService(OAuth2UserService())
-				.and()
-					.successHandler(oAuthSuccessHandler)
+					.and()
+						.userInfoEndpoint().userService(OAuth2UserService())
+					.and()
+						.successHandler(oAuthSuccessHandler)
 //					.failureUrl("/main.do")
 
 			.and()
@@ -110,8 +113,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
+
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.addAllowedOrigin("http://localhost:19006");
+		configuration.addAllowedOrigin(frontUrl);
 		configuration.addAllowedMethod("*");
 		configuration.addAllowedHeader("*");
 		configuration.setAllowCredentials(true);

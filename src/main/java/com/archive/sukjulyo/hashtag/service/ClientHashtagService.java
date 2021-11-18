@@ -12,9 +12,11 @@ import com.archive.sukjulyo.util.PropertyUtil;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,43 +32,63 @@ public class ClientHashtagService {
      * Select client's preferred hashtag by client's pk id
      *
      * @param id : client's pk id
+     * @param pageable : Pageable object
      * @return hash tags
      */
-    public List<ClientHashtag> selectClientHashtag(Long id) {
+    public List<ClientHashtag> selectClientHashtag(Long id, Pageable pageable) {
+        var client = clientRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Can't find any target client"
+                ));
+
         return clientHashtagRepository
-                .findAllByClient(clientRepository.getById(id))
+                .findAllByClient(client, pageable)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Can't find any target client's hashtags"
                 ));
     }
 
     /**
-     * Create a new column which is user's preferred hashtags
-     *
-     * @param dto : client hashtag create dto
-     * @return ClientHashtag entity
+     * Select client has hashatg
      */
-    public ClientHashtag saveClientHashtag(ClientHashtagCreateDTO dto) {
-
-        AllRounder all = this.findByClientAndHashtag(dto.getClientId(), dto.getHashtag());
-
-        if(all.clientHashtagOpt.isPresent()) {
-            ClientHashtag clientHashtag = all.clientHashtagOpt.get();
-            clientHashtag.setScore(dto.getScore());
-
-            return clientHashtagRepository.save(clientHashtag);
-        }
-        else {
-            return clientHashtagRepository.save(
-                    ClientHashtag.builder()
-                            .client(all.client)
-                            .hashtag(all.hashtag)
-                            .score(dto.getScore())
-                            .build()
-            );
-        }
+    public Boolean hasClientHashatg(Long id) {
+        return clientHashtagRepository.existsByClientId(id);
     }
 
+    /**
+     * Create hashatags data that the user prefers
+     *
+     * @param clientId : client's PK id
+     * @param dtos : list of DTO for create client tag
+     * @return created ClientHashtag list
+     */
+    public List<ClientHashtag> createClientHashtag(long clientId, List<ClientHashtagCreateDTO> dtos) {
+
+        Client client = clientRepository
+                .findById(clientId)
+                .orElseThrow(() -> new IllegalArgumentException("Can't find target client"));
+
+        List<ClientHashtag> result = new ArrayList<>();
+
+        for(var it : dtos) {
+            Hashtag hashtag = hashtagRepository
+                    .findByTag(it.getHashtag())
+                    .orElseThrow(() -> new IllegalArgumentException("Can't find target hashtag"));
+
+            result.add(
+                clientHashtagRepository.save(
+                    ClientHashtag.builder()
+                        .client(client)
+                        .hashtag(hashtag)
+                        .score(it.getScore())
+                        .build()
+                )
+            );
+        }
+
+        return result;
+    }
 
 
     /**
@@ -83,7 +105,9 @@ public class ClientHashtagService {
     }
 
 
-
+    /**
+     * A class with all the entities required to find ClientHashtag
+     */
     @AllArgsConstructor
     private class AllRounder {
         public Client client;
@@ -91,6 +115,14 @@ public class ClientHashtagService {
         public Optional<ClientHashtag> clientHashtagOpt;
     }
 
+
+    /**
+     * Find out if the client has a hashtag.
+     *
+     * @param clientId : client's PK id
+     * @param tag : hashtag
+     * @return AllRounder class with found entities
+     */
     private AllRounder findByClientAndHashtag(Long clientId, String tag) {
         Client client = clientRepository
                 .findById(clientId)

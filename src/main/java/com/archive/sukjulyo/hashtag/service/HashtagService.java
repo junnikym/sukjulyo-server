@@ -4,10 +4,12 @@ import com.archive.sukjulyo.hashtag.domain.Hashtag;
 import com.archive.sukjulyo.hashtag.dto.HashtagCreateDTO;
 import com.archive.sukjulyo.hashtag.dto.HashtagFreqRequestDTO;
 import com.archive.sukjulyo.hashtag.dto.HashtagFreqResponseVO;
+import com.archive.sukjulyo.hashtag.dto.HashtagFreqTopNResponseVO;
 import com.archive.sukjulyo.hashtag.repository.HashtagRepository;
 import com.archive.sukjulyo.util.PropertyUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,6 +33,20 @@ public class HashtagService {
     }
 
     /**
+     * Select All Hashtags
+     *
+     * @return All of Hashtag in DB
+     */
+    public List<Hashtag> selectHashtagList(Pageable pageable) {
+        return hashtagRepository.findByIsNoiseIsNotNull(pageable);
+    }
+
+    public List<Hashtag> selectSearchedHashtagList(String query, Pageable pageable) {
+        var result =  hashtagRepository.findByTagContaining(query, pageable);
+        return result;
+    }
+
+    /**
      * Select hashtag's frequency registed between start_t and end_t
      *
      * @param dto : DTO for select hashtag's frequency
@@ -41,19 +57,29 @@ public class HashtagService {
     ) {
         return hashtagRepository.findHashtagFreqByDate(
                 dto.getLimit(),
+                dto.getOffset(),
                 dto.getStart(),
                 dto.getEnd()
-        );//.orElseThrow(() -> new IllegalArgumentException("Can't find target client"));
+        );
     }
 
     /**
-     * Select All Hashtags
+     * Select hashtag's Top n-th frequency
      *
-     * @return All of Hashtag in DB
+     * @param dto
+     * @return
      */
-    public List<Hashtag> selectHashtags() {
-        return hashtagRepository.findAll();
+    public List<HashtagFreqTopNResponseVO> selectHashtagFreqNth(
+            HashtagFreqRequestDTO dto
+    ) {
+        return hashtagRepository.findHashtagFreqNth (
+                dto.getLimit(),
+                dto.getOffset(),
+                dto.getStart(),
+                dto.getEnd()
+        );
     }
+
 
     /**
      * Save muliple strings as Hashtags
@@ -111,7 +137,11 @@ public class HashtagService {
         return hashtagRepository.save(hashtag);
     }
 
-    //DELETE Hashtag
+    /**
+     * Delete hashtag
+     *
+     * @param id : Hashtag's PK id
+     */
     public void deleteHashtag(Long id) {
         hashtagRepository.deleteById(id);
     }

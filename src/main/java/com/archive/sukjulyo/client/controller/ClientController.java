@@ -31,15 +31,8 @@ public class ClientController {
     }
 
     @GetMapping()
-    public ResponseEntity selectClient(@RequestParam(required = false) Long id) {
-        if (id == null)
-            return ResponseEntity.ok(clientService.selectClientList());
+    public ResponseEntity selectClient(@RequestParam(required = true) Long id) {
         return ResponseEntity.ok(clientService.selectClient(id));
-    }
-
-    @GetMapping("/{refreshToken}")
-    public ResponseEntity selectClient(@PathVariable String refreshToken) {
-        return ResponseEntity.ok(clientService.selectClient(refreshToken));
     }
 
 //    @PostMapping()

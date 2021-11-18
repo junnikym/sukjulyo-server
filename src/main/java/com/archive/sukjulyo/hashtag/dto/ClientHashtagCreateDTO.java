@@ -10,10 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class ClientHashtagCreateDTO {
 
     @NotNull
-    private Long clientId;
-
-    @NotNull
-    private String Hashtag;
+    private String hashtag;
 
     @NotNull
     private Integer score;

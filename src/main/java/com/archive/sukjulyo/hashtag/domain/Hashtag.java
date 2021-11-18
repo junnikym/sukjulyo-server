@@ -18,7 +18,7 @@ import java.util.List;
 public class Hashtag implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 64, nullable = false, unique = true)
@@ -28,7 +28,7 @@ public class Hashtag implements Serializable {
     @ColumnDefault("0")
     private Integer priority;
 
-    @Column(name = "noise")
+    @Column()
     @ColumnDefault("false")
     private Boolean isNoise;
 

@@ -14,4 +14,6 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 
 	List<News> findAllByPubDateBetween(LocalDateTime start, LocalDateTime end);
 
+	Boolean existsByLink(String link);
+
 }

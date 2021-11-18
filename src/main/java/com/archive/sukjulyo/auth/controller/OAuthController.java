@@ -1,6 +1,7 @@
 package com.archive.sukjulyo.auth.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -16,12 +17,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OAuthController {
 
+	@Value("${frontend-app.entry}")
+	private String frontUrl;
+
 	@GetMapping()
 	public void loginCallback(
 			@RequestParam(required = false) String token,
 			HttpServletResponse httpServletResponse
 	) throws IOException {
-		httpServletResponse.sendRedirect("http://localhost:19006");
+		httpServletResponse.sendRedirect(frontUrl);
 	}
 
 }

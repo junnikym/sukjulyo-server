@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 public class History {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

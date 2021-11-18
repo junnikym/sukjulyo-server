@@ -36,7 +36,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 	private static final Pattern BEARER = Pattern.compile("^Bearer$", Pattern.CASE_INSENSITIVE);
 
-	@Value("${jwt.token-name}")
+	@Value("${jwt.token-header}")
 	private String tokenHeader;
 
 	@Resource
@@ -58,8 +58,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		if (requestMatcher.matches(request)) {
 
 			String jwt = getAuthenticationToken(request);
-			if (jwt.isEmpty())
+			if (jwt == null || jwt.equals("")) {
 				jwt = cookieUtil.getcookieValue(request, env.getProperty("jwt.token-name"));
+			}
 
 			if (jwt.isEmpty()) {
 				logger.error("not exist jwt at request");
@@ -99,12 +100,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	 * @return token string, if not exist returning null
 	 */
 	private String getAuthenticationToken(HttpServletRequest request)  {
-
-		Enumeration<String> em = request.getHeaderNames();
-		while(em.hasMoreElements()) {
-			String s = em.nextElement();
-			System.out.println(s + ": " + request.getHeader(s) + "<br/>");
-		}
 
 		String token = request.getHeader(this.tokenHeader);
 
