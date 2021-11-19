@@ -6,7 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class News implements Serializable {
 	@Column(length = 128, nullable = false)
 	private String title;
 
-	@Column(length = 256, nullable = true, unique = true)
+	@Column(length = 512, nullable = true, unique = true)
 	private String link;
 
 	@Column(columnDefinition = "TEXT", nullable = true)
@@ -37,7 +37,7 @@ public class News implements Serializable {
 	private String author;
 
 	@Column(nullable = false, updatable = false)
-	private Timestamp pubDate;
+	private LocalDateTime pubDate;
 
 	@ManyToMany
 	@JoinTable(

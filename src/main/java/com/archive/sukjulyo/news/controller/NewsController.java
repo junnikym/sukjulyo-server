@@ -1,9 +1,10 @@
 package com.archive.sukjulyo.news.controller;
 
 import com.archive.sukjulyo.news.dto.NewsCreateDTO;
+import com.archive.sukjulyo.util.enums.Period;
 import com.archive.sukjulyo.news.service.NewsService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,14 @@ public class NewsController {
 	@PostMapping()
 	public ResponseEntity createNews (@RequestBody NewsCreateDTO dto) {
 		return ResponseEntity.ok(newsService.createNews(dto));
+	}
+
+	@GetMapping()
+	public ResponseEntity selectNews (
+			final Pageable pageable,
+			@RequestParam(required = true) Period period
+	) {
+		return ResponseEntity.ok(newsService.selectNewsByPeriod(period, pageable));
 	}
 
 	@GetMapping("/exists")

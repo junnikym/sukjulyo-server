@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -22,7 +21,7 @@ public class NewsCreateDTO implements Serializable {
 	private List<String> hashtags;
 
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Timestamp pubDate;
+	private LocalDateTime pubDate;
 
 	public News toEntity(List<Hashtag> hashtagEntities) {
 

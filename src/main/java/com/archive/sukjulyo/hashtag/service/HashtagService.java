@@ -6,6 +6,7 @@ import com.archive.sukjulyo.hashtag.dto.HashtagFreqRequestDTO;
 import com.archive.sukjulyo.hashtag.dto.HashtagFreqResponseVO;
 import com.archive.sukjulyo.hashtag.dto.HashtagFreqTopNResponseVO;
 import com.archive.sukjulyo.hashtag.repository.HashtagRepository;
+import com.archive.sukjulyo.util.enums.Period;
 import com.archive.sukjulyo.util.PropertyUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -70,13 +71,17 @@ public class HashtagService {
      * @return
      */
     public List<HashtagFreqTopNResponseVO> selectHashtagFreqNth(
+            Period period,
             HashtagFreqRequestDTO dto
     ) {
+        System.out.println(dto.toString());
+
         return hashtagRepository.findHashtagFreqNth (
                 dto.getLimit(),
                 dto.getOffset(),
                 dto.getStart(),
-                dto.getEnd()
+                dto.getEnd(),
+                period
         );
     }
 
@@ -96,6 +101,7 @@ public class HashtagService {
                     .orElseGet( () ->{
                         return hashtagRepository.save(
                                 Hashtag.builder()
+                                    .isNoise(false)
                                     .tag(it)
                                     .news(null)
                                     .build()

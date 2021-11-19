@@ -3,6 +3,7 @@ package com.archive.sukjulyo.hashtag.repository;
 import com.archive.sukjulyo.hashtag.domain.Hashtag;
 import com.archive.sukjulyo.hashtag.dto.HashtagFreqResponseVO;
 import com.archive.sukjulyo.hashtag.dto.HashtagFreqTopNResponseVO;
+import com.archive.sukjulyo.util.enums.Period;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -58,16 +59,23 @@ public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
                    "             BETWEEN :start_t" +
                    "             AND :end_t" +
                    "     ) AND h.is_noise = false" +
-                   "    GROUP BY EXTRACT(DAY FROM DATE(n.pub_date)), nh.hashatag_fk" +
+                   "    GROUP BY " +
+                   "        (" +
+                   "            CASE :period " +
+                   "            WHEN 'DAY' THEN EXTRACT(DAY FROM DATE(n.pub_date))" +
+                   "            END" +
+                   "        ), " +
+                   "        nh.hashatag_fk" +
                    "    ORDER BY freq DESC" +
                    ") hashtag_freq " +
                    "WHERE :offset_n < row_num AND row_num < :limit_n ",
             nativeQuery = true)
     List<HashtagFreqTopNResponseVO> findHashtagFreqNth(
-            @Param("limit_n")   int limit_n,
-            @Param("offset_n")    int offset_n,
-            @Param("start_t")   LocalDateTime startTime,
-            @Param("end_t")     LocalDateTime endTime
+            @Param("limit_n")   int             limit_n,
+            @Param("offset_n")  int             offset_n,
+            @Param("start_t")   LocalDateTime   startTime,
+            @Param("end_t")     LocalDateTime   endTime,
+            @Param("period")    Period          period
     );
 
     List<Hashtag> findByIsNoiseIsNotNull(Pageable pageable);

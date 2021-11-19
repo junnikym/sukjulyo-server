@@ -4,9 +4,12 @@ import com.archive.sukjulyo.hashtag.service.HashtagService;
 import com.archive.sukjulyo.news.domain.News;
 import com.archive.sukjulyo.news.dto.NewsCreateDTO;
 import com.archive.sukjulyo.news.repository.NewsRepository;
+import com.archive.sukjulyo.util.enums.Period;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +40,23 @@ public class NewsService {
 		return newsRepository.save(
 				dto.toEntity(hashtagService.selectAndCreateHashtag(tags)
 		));
+	}
+
+	/**
+	 * Select news from now until period that input
+	 *
+	 * @param period : period
+	 * @return Selected news list
+	 */
+	public List<News> selectNewsByPeriod(Period period, Pageable pageable) {
+		var duration = period.toDuration();
+		if(duration == null)
+			throw new IllegalArgumentException("wrong period");
+
+		var end = LocalDateTime.now();
+		var start = end.minusHours(duration.toHours());
+
+		return newsRepository.findAllByPubDateBetween(start, end, pageable);
 	}
 
 	/**
