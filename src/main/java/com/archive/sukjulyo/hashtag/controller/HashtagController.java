@@ -29,14 +29,14 @@ public class HashtagController {
      * @return Hashtag List
      */
     @GetMapping()
-    public List<Hashtag> selectHashtag(
+    public ResponseEntity selectHashtag(
             final Pageable pageable,
             @RequestParam(required = false) String q
     ) {
         if(q == null)
-            return hashtagService.selectHashtagList(pageable);
+            return ResponseEntity.ok( hashtagService.selectHashtagList(pageable) );
 
-        return hashtagService.selectSearchedHashtagList(q, pageable);
+        return ResponseEntity.ok( hashtagService.selectSearchedHashtagList(q, pageable) );
     }
 
     /**

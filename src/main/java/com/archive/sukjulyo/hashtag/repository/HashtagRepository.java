@@ -35,7 +35,7 @@ public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
             nativeQuery = true)
     List<HashtagFreqResponseVO> findHashtagFreqByDate(
             @Param("limit_n")   int limit_n,
-            @Param("offset_n")    int offset_n,
+            @Param("offset_n")  int offset_n,
             @Param("start_t")   LocalDateTime startTime,
             @Param("end_t")     LocalDateTime endTime
     );
@@ -47,9 +47,11 @@ public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
                    "        h.tag," +
                    "        COUNT(*) AS freq," +
                    "        EXTRACT(DAY from pub_date) AS pub_date," +
-                   "        ROW_NUMBER() OVER(" +
-                   "            PARTITION BY EXTRACT(DAY from pub_date)" +
-                   "            ORDER BY COUNT(*) DESC" +
+                   "        (" +
+                   "            ROW_NUMBER() OVER(" +
+                   "                PARTITION BY EXTRACT(DAY from pub_date)" +
+                   "                ORDER BY COUNT(*) DESC" +
+                   "            )" +
                    "        ) row_num" +
                    "    FROM news_hashtag AS nh" +
                    "    LEFT JOIN hashtag AS h ON nh.hashatag_fk=h.id" +
@@ -68,7 +70,7 @@ public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
                    "        nh.hashatag_fk" +
                    "    ORDER BY freq DESC" +
                    ") hashtag_freq " +
-                   "WHERE :offset_n < row_num AND row_num < :limit_n ",
+                   "WHERE :offset_n <= row_num AND row_num <= :limit_n ",
             nativeQuery = true)
     List<HashtagFreqTopNResponseVO> findHashtagFreqNth(
             @Param("limit_n")   int             limit_n,

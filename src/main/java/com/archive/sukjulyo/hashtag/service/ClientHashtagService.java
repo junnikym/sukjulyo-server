@@ -6,6 +6,7 @@ import com.archive.sukjulyo.hashtag.domain.ClientHashtag;
 import com.archive.sukjulyo.hashtag.domain.Hashtag;
 import com.archive.sukjulyo.hashtag.dto.ClientHashtagCreateDTO;
 import com.archive.sukjulyo.hashtag.dto.ClientHashtagDeleleDTO;
+import com.archive.sukjulyo.hashtag.dto.ClientHashtagVO;
 import com.archive.sukjulyo.hashtag.repository.ClientHashtagRepository;
 import com.archive.sukjulyo.hashtag.repository.HashtagRepository;
 import com.archive.sukjulyo.util.PropertyUtil;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,14 +30,7 @@ public class ClientHashtagService {
     private final ClientHashtagRepository clientHashtagRepository;
     private final ClientRepository clientRepository;
 
-    /**
-     * Select client's preferred hashtag by client's pk id
-     *
-     * @param id : client's pk id
-     * @param pageable : Pageable object
-     * @return hash tags
-     */
-    public List<ClientHashtag> selectClientHashtag(Long id, Pageable pageable) {
+    public List<ClientHashtag> selectClientHashtagInDetail(Long id, Pageable pageable) {
         var client = clientRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
@@ -46,6 +41,45 @@ public class ClientHashtagService {
                 .findAllByClient(client, pageable)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Can't find any target client's hashtags"
+                ));
+    }
+
+    /**
+     * Select client's preferred hashtag by client's pk id
+     *
+     * @param id : client's pk id
+     * @param nHashtag : number of hashtag
+     * @return hash tags
+     */
+    public List<ClientHashtagVO> selectClientHashtag(Long id, int nHashtag) {
+        var client = clientRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Can't find any target client"
+                ));
+
+        return clientHashtagRepository
+                .findAllByClientId(id, Pageable.ofSize(nHashtag))
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Can't find any target client's hashtags"
+                ));
+    }
+
+    public List<ClientHashtagVO> selectClientHashtagRandomly(
+            List<Long> ExceptIds,
+            int nClient,
+            int nHashtag
+    ) {
+        var selected = clientRepository
+                .selectRandomly(ExceptIds, nClient)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Can't find any randomly client"
+                ));
+
+        return clientHashtagRepository
+                .findAllByClientList(selected, nHashtag)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Can't find any randomly client"
                 ));
     }
 
