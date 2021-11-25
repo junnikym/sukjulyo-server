@@ -3,9 +3,13 @@ package com.archive.sukjulyo.news.service;
 import com.archive.sukjulyo.hashtag.service.HashtagService;
 import com.archive.sukjulyo.news.domain.News;
 import com.archive.sukjulyo.news.dto.NewsCreateDTO;
+import com.archive.sukjulyo.news.dto.NewsUpdateDTO;
 import com.archive.sukjulyo.news.repository.NewsRepository;
+import com.archive.sukjulyo.util.PropertyUtil;
 import com.archive.sukjulyo.util.enums.Period;
+import com.archive.sukjulyo.util.interfaces.DtoInterface;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +61,15 @@ public class NewsService {
 		var start = end.minusHours(duration.toHours());
 
 		return newsRepository.findAllByPubDateBetween(start, end, pageable);
+	}
+
+	public int updateNewsSummary(NewsUpdateDTO dto) {
+		try {
+			return newsRepository.updateSummary(dto);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
 	/**

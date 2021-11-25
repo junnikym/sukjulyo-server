@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PropertyUtil {
+
 	public static String[] getNullPropertyNames (Object source) {
 		final BeanWrapper src = new BeanWrapperImpl(source);
 		java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
@@ -20,4 +21,5 @@ public class PropertyUtil {
 		String[] result = new String[emptyNames.size()];
 		return emptyNames.toArray(result);
 	}
+
 }

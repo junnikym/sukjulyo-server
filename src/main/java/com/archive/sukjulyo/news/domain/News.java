@@ -21,19 +21,22 @@ public class News implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 32, nullable = false)
+	@Column(length = 32, nullable = false, updatable=false)
 	private String corp;
 
-	@Column(length = 128, nullable = false)
+	@Column(length = 128, nullable = false, updatable=false)
 	private String title;
 
-	@Column(length = 512, nullable = true, unique = true)
+	@Column(length = 512, nullable = true, unique = true, updatable=false)
 	private String link;
 
-	@Column(columnDefinition = "TEXT", nullable = true)
+	@Column(columnDefinition = "TEXT", nullable = true, updatable=false)
 	private String description;
 
-	@Column(length = 64, nullable = true)
+	@Column(columnDefinition = "TEXT", nullable = true)
+	private String summary;
+
+	@Column(length = 64, nullable = true, updatable=false)
 	private String author;
 
 	@Column(nullable = false, updatable = false)
