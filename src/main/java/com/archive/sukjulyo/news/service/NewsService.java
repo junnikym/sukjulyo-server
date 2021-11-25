@@ -47,6 +47,20 @@ public class NewsService {
 	}
 
 	/**
+	 * Select News List
+	 *
+	 * @param ids : News list which wanna find
+	 * @return Selected news list
+	 */
+	public List<News> selectAllNewsById(List<Long> ids) {
+		return newsRepository
+				.findAllByIdIn(ids)
+				.orElseThrow(() -> new IllegalArgumentException(
+						"Can't find any target news"
+				));
+	}
+
+	/**
 	 * Select news from now until period that input
 	 *
 	 * @param period : period
@@ -63,6 +77,12 @@ public class NewsService {
 		return newsRepository.findAllByPubDateBetween(start, end, pageable);
 	}
 
+	/**
+	 * Update summary of news data
+	 *
+	 * @param dto : News update DTO
+	 * @return Number of updated elements
+	 */
 	public int updateNewsSummary(NewsUpdateDTO dto) {
 		try {
 			return newsRepository.updateSummary(dto);

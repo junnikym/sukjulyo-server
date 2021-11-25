@@ -17,16 +17,18 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 
 	Optional<News> findById(Long id);
 
+	Optional<List<News>> findAllByIdIn(List<Long> ids);
+
 	List<News> findAllByPubDateBetween(LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+	Boolean existsByLink(String link);
 
 	@Transactional
 	@Modifying(clearAutomatically = true)
 	@Query(value = "UPDATE news n " +
-				   "SET n.summary = (:#{#dto.summary}) " +
-				   "WHERE  n.link = (:#{#dto.link})",
+			"SET n.summary = (:#{#dto.summary}) " +
+			"WHERE  n.link = (:#{#dto.link})",
 			nativeQuery = true)
 	int updateSummary(@Param("dto") NewsUpdateDTO dto);
-
-	Boolean existsByLink(String link);
 
 }
