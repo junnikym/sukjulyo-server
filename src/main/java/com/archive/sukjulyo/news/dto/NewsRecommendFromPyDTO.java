@@ -7,10 +7,12 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class NewsRecommendationResDTO {
+public class NewsRecommendFromPyDTO {
 
-	private List<Long> hashtags;
+	private List<Long> newsIds;
 
-	public NewsRecommendationResDTO() {}
+	private List<String> hashtags;
+
+	public NewsRecommendFromPyDTO () {}
 
 }

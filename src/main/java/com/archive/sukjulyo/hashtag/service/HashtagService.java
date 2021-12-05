@@ -34,6 +34,18 @@ public class HashtagService {
     }
 
     /**
+     * Select Hashtag list by id list
+     *
+     * @param ids : Hashtag id list
+     * @return Hashtag list
+     */
+    public List<Hashtag> selectAllHashtagById(List<Long> ids) {
+        return hashtagRepository
+                .findAllByIdIn(ids)
+                .orElseGet( ()->{ return null; } );
+    }
+
+    /**
      * Select All Hashtags
      *
      * @return All of Hashtag in DB

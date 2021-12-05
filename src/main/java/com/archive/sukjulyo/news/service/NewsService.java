@@ -3,6 +3,8 @@ package com.archive.sukjulyo.news.service;
 import com.archive.sukjulyo.hashtag.service.HashtagService;
 import com.archive.sukjulyo.news.domain.News;
 import com.archive.sukjulyo.news.dto.NewsCreateDTO;
+import com.archive.sukjulyo.news.dto.NewsRecommendFromPyDTO;
+import com.archive.sukjulyo.news.dto.NewsRecommendResDTO;
 import com.archive.sukjulyo.news.dto.NewsUpdateDTO;
 import com.archive.sukjulyo.news.repository.NewsRepository;
 import com.archive.sukjulyo.util.PropertyUtil;
@@ -10,8 +12,14 @@ import com.archive.sukjulyo.util.enums.Period;
 import com.archive.sukjulyo.util.interfaces.DtoInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,6 +31,11 @@ public class NewsService {
 	private final NewsRepository newsRepository;
 
 	private final HashtagService hashtagService;
+
+	private final RestTemplate restTemplate;
+
+	@Value("${ai-app.entry}")
+	private String aiAppUrl;
 
 	/**
 	 * Create News
@@ -109,5 +122,27 @@ public class NewsService {
 	 */
 	public void deleteClient(Long id) {
 		newsRepository.deleteById(id);
+	}
+
+
+
+	public NewsRecommendResDTO recommendNews(String clientId) {
+		final HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		final HttpEntity<?> entity = new HttpEntity<>(headers);
+		var res = restTemplate.exchange(
+				(this.aiAppUrl+"/r/"+clientId),
+				HttpMethod.GET,
+				entity,
+				NewsRecommendFromPyDTO.class
+		).getBody();
+
+		if(res == null)
+			return null;
+
+		return NewsRecommendResDTO.builder()
+						.news( selectAllNewsById(res.getNewsIds()) )
+						.hashtags( res.getHashtags() )
+						.build();
 	}
 }

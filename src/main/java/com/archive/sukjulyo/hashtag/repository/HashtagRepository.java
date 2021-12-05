@@ -3,6 +3,7 @@ package com.archive.sukjulyo.hashtag.repository;
 import com.archive.sukjulyo.hashtag.domain.Hashtag;
 import com.archive.sukjulyo.hashtag.dto.HashtagFreqResponseVO;
 import com.archive.sukjulyo.hashtag.dto.HashtagFreqTopNResponseVO;
+import com.archive.sukjulyo.news.domain.News;
 import com.archive.sukjulyo.util.enums.Period;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,8 @@ import java.util.Optional;
 public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
 
     Optional<Hashtag> findById(Long id);
+
+    Optional<List<Hashtag>> findAllByIdIn(List<Long> ids);
 
     Optional<Hashtag> findByTag(String tag);
 
