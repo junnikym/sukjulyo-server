@@ -1,8 +1,8 @@
-<center>
+<p align="center">
 	<img src="./readme/images/head_image_1.png" width="100%" alter="석줄요 소개 1" />
 	<img src="./readme/images/head_image_2.png" width="100%" alter="석줄요 소개 2" />
 	<img src="./readme/images/head_image_3.png" width="100%" alter="석줄요 소개 3" />
-</center>
+</p>
 
 <br/><br/>
 
@@ -19,10 +19,11 @@
 
 <br/><br/>
 
+## Other Part
 | Part | Link |
 |---|---|
 | 요약 밑 추천 기능 | <https://github.com/junnikym/sukjulyo> |
-| 클라이언트 앱 | <https://github.com/solarpark7346/sukjulyo-app>
+| 클라이언트 앱 | <https://github.com/solarpark7346/sukjulyo-app> |
 
 <br/>
 
@@ -39,6 +40,17 @@
 </center>
 
 <br/>
+
+# Screen
+
+<br/>
+
+<p align="center">
+<img src="./readme/images/screen_login.png" width="270"/><img src="./readme/images/screen_kakao.png" width="270"/>
+</p>
+<p align="center">
+<img src="./readme/images/screen_cate.png" width="270"/> <img src="./readme/images/screen_news.png" width="270"/> <img src="./readme/images/screen_setting.png" width="270"/>
+</p>
 
 -----
 Sukjulyo is [MIT licensed](LICENSE).
