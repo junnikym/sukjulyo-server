@@ -13,6 +13,7 @@ import com.archive.sukjulyo.util.interfaces.DtoInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RefreshScope
 @RequiredArgsConstructor
 public class NewsService {
 	private final NewsRepository newsRepository;

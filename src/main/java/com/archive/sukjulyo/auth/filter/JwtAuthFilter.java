@@ -4,6 +4,7 @@ import com.archive.sukjulyo.util.CookieUtil;
 import com.archive.sukjulyo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+@RefreshScope
 public class JwtAuthFilter extends OncePerRequestFilter {
 
 	private RequestMatcher requestMatcher = new AntPathRequestMatcher("/**");
