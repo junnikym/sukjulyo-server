@@ -92,7 +92,7 @@ public class HashtagController {
     public ResponseEntity updateHashtag(
             @RequestParam(required = false) Long id,
             @RequestBody HashtagCreateDTO dto
-    ) {
+    ) throws Exception {
         return ResponseEntity.ok(hashtagService.updateHashtag(id, dto));
     }
 

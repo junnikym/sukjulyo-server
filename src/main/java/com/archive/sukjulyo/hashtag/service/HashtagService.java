@@ -6,13 +6,14 @@ import com.archive.sukjulyo.hashtag.dto.HashtagFreqRequestDTO;
 import com.archive.sukjulyo.hashtag.dto.HashtagFreqResponseVO;
 import com.archive.sukjulyo.hashtag.dto.HashtagFreqTopNResponseVO;
 import com.archive.sukjulyo.hashtag.repository.HashtagRepository;
+import com.archive.sukjulyo.util.ClassConverter;
 import com.archive.sukjulyo.util.enums.Period;
-import com.archive.sukjulyo.util.PropertyUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,14 +144,14 @@ public class HashtagService {
      * @param dto : DTO for Update Hashtag
      * @return Updated Hashtag
      */
-    public Hashtag updateHashtag(Long id, HashtagCreateDTO dto) {
+    public Hashtag updateHashtag(Long id, HashtagCreateDTO dto) throws Exception {
         Hashtag hashtag = hashtagRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "Can't find target client"
+                        "Can't find target account"
                 ));
 
-        BeanUtils.copyProperties(dto, hashtag, PropertyUtil.getNullPropertyNames(dto));
+        ClassConverter.convertWithoutNull(dto, hashtag);
 
         return hashtagRepository.save(hashtag);
     }

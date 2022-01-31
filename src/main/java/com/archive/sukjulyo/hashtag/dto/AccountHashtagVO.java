@@ -1,12 +1,12 @@
 package com.archive.sukjulyo.hashtag.dto;
 
-public interface ClientHashtagVO {
+public interface AccountHashtagVO {
 
 	Integer getId();
 
 	Integer getScore();
 
-	Long getClientId();
+	Long getAccountId();
 
 	Long getHashtagId();
 

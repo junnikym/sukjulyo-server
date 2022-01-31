@@ -1,6 +1,6 @@
 package com.archive.sukjulyo.liked.dto;
 
-import com.archive.sukjulyo.client.domain.Client;
+import com.archive.sukjulyo.account.domain.Account;
 import com.archive.sukjulyo.liked.domain.Liked;
 import lombok.Data;
 
@@ -8,14 +8,14 @@ import java.time.LocalDateTime;
 
 @Data
 public class LikedCreationDTO {
-    private Long clientId;
+    private Long accountId;
 
-    private Client client;
+    private Account account;
     private Boolean isLike;
 
     public Liked toEntity() {
         return Liked.builder()
-                .client(this.client)
+                .account(this.account)
                 .isLike(this.isLike)
                 .build();
     }

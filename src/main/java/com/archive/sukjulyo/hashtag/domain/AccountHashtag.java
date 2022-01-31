@@ -1,6 +1,6 @@
 package com.archive.sukjulyo.hashtag.domain;
 
-import com.archive.sukjulyo.client.domain.Client;
+import com.archive.sukjulyo.account.domain.Account;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,18 +11,16 @@ import java.io.Serializable;
 @Getter @Setter
 @Builder
 @Entity
-public class ClientHashtag implements Serializable {
+public class AccountHashtag implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "client_id")
-    private Client client;
+    private Account account;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
 
     @Column(nullable = false)

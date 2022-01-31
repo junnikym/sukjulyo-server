@@ -1,7 +1,7 @@
 package com.archive.sukjulyo.history.service;
 
-import com.archive.sukjulyo.client.domain.Client;
-import com.archive.sukjulyo.client.repository.ClientRepository;
+import com.archive.sukjulyo.account.domain.Account;
+import com.archive.sukjulyo.account.repository.AccountRepository;
 import com.archive.sukjulyo.history.domain.History;
 import com.archive.sukjulyo.history.dto.HistoryCreationDTO;
 import com.archive.sukjulyo.history.repository.HistoryRepository;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HistoryService {
     private final HistoryRepository historyRepository;
-    private final ClientRepository clientRepository;
+    private final AccountRepository accountRepository;
 
     //SELECT History
     public History selectHistory(Long id) {
@@ -35,10 +35,10 @@ public class HistoryService {
 
     //CREATE History
     public History createHistory(HistoryCreationDTO dto) {
-        dto.setClient(clientRepository
-                .findById(dto.getClientId())
+        dto.setAccount(accountRepository
+                .findById(dto.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "Can't find target client"
+                        "Can't find target account"
                 ))
         );
 

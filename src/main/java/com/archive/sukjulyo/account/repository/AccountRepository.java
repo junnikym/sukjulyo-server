@@ -1,19 +1,24 @@
-package com.archive.sukjulyo.client.repository;
+package com.archive.sukjulyo.account.repository;
 
-import com.archive.sukjulyo.client.domain.Client;
+import com.archive.sukjulyo.account.domain.Account;
+import com.archive.sukjulyo.auth.dto.OAuthAttributesDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ClientRepository extends JpaRepository<Client, Long> {
+@Repository
+public interface AccountRepository extends JpaRepository<Account, Long> {
 
-    Optional<Client> findById(Long id);
+    Optional<Account> findById(Long id);
+
+    Optional<Account> getByEmail(String email);
 
     @Query(value = "SELECT id " +
-                   "FROM client " +
+                   "FROM account " +
                    "WHERE id NOT IN (:exeptIds) " +
                    "ORDER BY RAND() LIMIT :n",
             nativeQuery = true)

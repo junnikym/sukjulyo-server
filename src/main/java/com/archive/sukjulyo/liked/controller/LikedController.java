@@ -31,7 +31,7 @@ public class LikedController {
     public ResponseEntity updateLiked(
             @RequestParam(required = false) Long id,
             @RequestBody LikedCreationDTO request
-    ) {
+    ) throws Exception {
         return ResponseEntity.ok(likedService.updateLiked(id, request));
     }
 

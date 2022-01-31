@@ -1,6 +1,6 @@
 package com.archive.sukjulyo.history.domain;
 
-import com.archive.sukjulyo.client.domain.Client;
+import com.archive.sukjulyo.account.domain.Account;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -18,8 +18,8 @@ public class History {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @CreationTimestamp
     private LocalDateTime create_at;

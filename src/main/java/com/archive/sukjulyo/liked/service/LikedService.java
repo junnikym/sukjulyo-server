@@ -1,38 +1,38 @@
 package com.archive.sukjulyo.liked.service;
 
-import com.archive.sukjulyo.client.domain.Client;
-import com.archive.sukjulyo.client.repository.ClientRepository;
+import com.archive.sukjulyo.account.repository.AccountRepository;
 import com.archive.sukjulyo.liked.domain.Liked;
 import com.archive.sukjulyo.liked.dto.LikedCreationDTO;
 import com.archive.sukjulyo.liked.repository.LikedRepository;
-import com.archive.sukjulyo.util.PropertyUtil;
+import com.archive.sukjulyo.util.ClassConverter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.InvocationTargetException;
 
 @Service
 @RequiredArgsConstructor
 @Lazy
 public class LikedService {
     private final LikedRepository likedRepository;
-    private final ClientRepository clientRepository;
+    private final AccountRepository accountRepository;
 
     //SELECT Liked by id
     public Liked selectLiked (Long id) {
         return likedRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "Can't find target client"
+                        "Can't find target account"
                 ));
     }
 
     //CREATE Liked
     public Liked createLiked (LikedCreationDTO dto) {
-        dto.setClient(clientRepository
-                .findById(dto.getClientId())
+        dto.setAccount(accountRepository
+                .findById(dto.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "Can't find target client"
+                        "Can't find target account"
                 ))
         );
 
@@ -40,13 +40,13 @@ public class LikedService {
     }
 
     //UPDATE Liked
-    public Liked updateLiked(Long id, LikedCreationDTO dto) {
+    public Liked updateLiked(Long id, LikedCreationDTO dto) throws Exception {
         Liked liked = likedRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Can't find target liked entity"
                 ));
 
-        BeanUtils.copyProperties(dto, liked, PropertyUtil.getNullPropertyNames(dto));
+        ClassConverter.convertWithoutNull(dto, liked);
 
         return likedRepository.save(liked);
     }

@@ -1,6 +1,6 @@
 package com.archive.sukjulyo.liked.domain;
 
-import com.archive.sukjulyo.client.domain.Client;
+import com.archive.sukjulyo.account.domain.Account;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,8 +19,8 @@ public class Liked {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @Column(nullable = false)
     @ColumnDefault("true")

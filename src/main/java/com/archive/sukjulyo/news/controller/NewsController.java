@@ -56,11 +56,11 @@ public class NewsController {
 	@GetMapping("/recommendation")
 	public ResponseEntity newsRecommendations() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String clientId = auth.getName();
-		if(clientId.equals("anonymousUser"))
+		String accountId = auth.getName();
+		if(accountId.equals("anonymousUser"))
 			return ResponseEntity.status(401).build();
 
-		var result = newsService.recommendNews(clientId);
+		var result = newsService.recommendNews(accountId);
 
 		if(result == null)
 			return ResponseEntity.internalServerError().build();
@@ -106,7 +106,7 @@ public class NewsController {
 	 */
 	@DeleteMapping()
 	public ResponseEntity deleteNews (@RequestParam(required = false) Long id) {
-		newsService.deleteClient(id);
+		newsService.deleteNews(id);
 		return ResponseEntity.ok().build();
 	}
 }

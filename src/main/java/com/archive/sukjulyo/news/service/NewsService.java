@@ -7,18 +7,14 @@ import com.archive.sukjulyo.news.dto.NewsRecommendFromPyDTO;
 import com.archive.sukjulyo.news.dto.NewsRecommendResDTO;
 import com.archive.sukjulyo.news.dto.NewsUpdateDTO;
 import com.archive.sukjulyo.news.repository.NewsRepository;
-import com.archive.sukjulyo.util.PropertyUtil;
 import com.archive.sukjulyo.util.enums.Period;
-import com.archive.sukjulyo.util.interfaces.DtoInterface;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -122,18 +118,18 @@ public class NewsService {
 	 *
 	 * @param id : News primary key ID
 	 */
-	public void deleteClient(Long id) {
+	public void deleteNews(Long id) {
 		newsRepository.deleteById(id);
 	}
 
 
 
-	public NewsRecommendResDTO recommendNews(String clientId) {
+	public NewsRecommendResDTO recommendNews(String accountId) {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json");
 		final HttpEntity<?> entity = new HttpEntity<>(headers);
 		var res = restTemplate.exchange(
-				(this.aiAppUrl+"/r/"+clientId),
+				(this.aiAppUrl+"/r/"+accountId),
 				HttpMethod.GET,
 				entity,
 				NewsRecommendFromPyDTO.class
