@@ -1,4 +1,4 @@
-package com.archive.sukjulyo.hashtag.dto;
+package com.archive.sukjulyo.hashtag.vo;
 
 public interface HashtagFreqTopNResponseVO {
 

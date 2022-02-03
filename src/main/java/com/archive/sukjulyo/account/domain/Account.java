@@ -14,7 +14,7 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Builder @ToString
+@Getter @Builder
 @DynamicInsert
 public class Account implements Serializable {
 
@@ -34,10 +34,6 @@ public class Account implements Serializable {
     @Column(nullable = false)
     @ColumnDefault("'NORMAL'")
     private AccountRole role;
-
-    public void setRole (AccountRole role) {
-        this.role = role;
-    }
 
 }
 

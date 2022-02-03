@@ -1,9 +1,8 @@
 package com.archive.sukjulyo.hashtag.repository;
 
 import com.archive.sukjulyo.hashtag.domain.Hashtag;
-import com.archive.sukjulyo.hashtag.dto.HashtagFreqResponseVO;
-import com.archive.sukjulyo.hashtag.dto.HashtagFreqTopNResponseVO;
-import com.archive.sukjulyo.news.domain.News;
+import com.archive.sukjulyo.hashtag.vo.HashtagFreqResponseVO;
+import com.archive.sukjulyo.hashtag.vo.HashtagFreqTopNResponseVO;
 import com.archive.sukjulyo.util.enums.Period;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
